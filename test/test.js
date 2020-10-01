@@ -8,9 +8,9 @@ chai.use(chaiHttp)
  
 
 
-describe('Array Check', () => {
-    describe('Index of Function check', () => {
-        it('expect to return value -1 when element is not present', () => {
+describe('Array', () => {
+    describe('Check the index', () => {
+        it('return -1 when element is not found', () => {
             assert.equal([6,7,9].indexOf(1), -1);
         });
     });
@@ -19,11 +19,11 @@ describe('Array Check', () => {
  
 
 
-describe('Check for Username and Password', () => {
-    describe('Check for Password', () => {
+describe('Test Password', () => {
+    describe('test Password', () => {
        
-        it('should have strong password', () => {
-            let password = "Test@12345"
+        it('Password must be strong', () => {
+            let password = "S8uD@9Tes"
             let valid=true;
             if (!/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/.test(password)) {
                 valid=false;
