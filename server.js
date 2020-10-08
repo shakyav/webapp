@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./app/models");
-/* const Role = db.role; */
+
 
 db.sequelize.sync({force: true}).then(() => {
   console.log('Drop and Resync Db');
@@ -41,19 +41,4 @@ app.listen(PORT, () => {
 
 module.exports=app
 
-/* const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'vivek',
-  password: 'Viv@2789',
-  database: 'csye6225'
-});
-connection.connect((err) => {
-  if (err) throw err;
-  console.log('Connected!');
-});
-connection.query('SELECT * FROM users_table', (err,rows) => {
-    if(err) throw err;
-  
-    console.log('Data received from Db:');
-    console.log(rows);
-  }); */
+
