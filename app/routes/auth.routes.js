@@ -79,7 +79,7 @@ module.exports = function (app) {
     controller.sign_Up
   );
 
-  // 5 . get user info by id
+  // 5 . get user info by Id
   app.get("/v1/user/:user_id", controller.getUserById)
 
 
