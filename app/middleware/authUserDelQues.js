@@ -16,6 +16,9 @@ checkAuthenticUser = (req, res, next) => {
       questId: req.params.question_id
     }
   }).then(quest => {
+    if(!quest){
+      return res.status(400).send({message:"question ID not found"})
+    }
       console.log("\n ----------"+(quest.user_id == req.user.userId)+"\n ----------")
     if (quest.user_id != req.user.userId) {
       res.status(401).send({

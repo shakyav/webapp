@@ -117,7 +117,15 @@ exports.createAnswer = (req, res, ) => {
     return res.status(400).send({
       "message": "Answer Text cannot be empty"
     })
+  }else{
+    questions.findByPk(req.params.questId).then((quest)=>{
+      if(!quest){
+        return res.status(400).send({message:"question not found"})
+      }
+    })
+
   }
+  
   answers.create({
     answer_Text: req.body.answer_Text,
     question_id: req.params.questId,
@@ -132,7 +140,7 @@ exports.createAnswer = (req, res, ) => {
       });
 
     }
-    return res.send({
+    return res.status(201).send({
       answer: answer
     })
   }).catch((err) => {
@@ -242,7 +250,7 @@ exports.getAnswerByIdQuestionById = (req, res) => {
   }).then((answer) => {
     if (!answer) {
 
-      return res.status(404).send({
+      return res.status(400).send({
         message: "answer Not found."
       });
 
@@ -252,7 +260,7 @@ exports.getAnswerByIdQuestionById = (req, res) => {
 
       }).then((quest) => {
         if (!quest) {
-          return res.status(404).send({
+          return res.status(400).send({
             message: "question not found"
           })
         }
@@ -374,12 +382,25 @@ exports.deleteAnswer = (req, res) => {
       where: {
         ansId: req.params.answer_id
       }
-    }).then(
-      res.status(200).send({
-        message: "Answer Deleted"
-      }))
+    }).then(()=>{
+      if (!answer) {
+
+        return res.status(400).send({
+          message: "answer Not found."
+        });
+  
+      }else{
+        res.status(200).send({
+          message: "Answer Deleted"
+        })
+
+      }
+    }
+
+      
+ )
     .catch(err => {
-      res.status(500).send({
+      res.status(400).send({
         message: err.message
       });
     });
