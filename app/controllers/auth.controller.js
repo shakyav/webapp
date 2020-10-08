@@ -36,7 +36,7 @@ exports.sign_Up = (req, res) => {
     .catch(err => {
 
 
-      res.status(500).send({
+      res.status(400).send({
         message: err.message
       });
     });
@@ -68,7 +68,7 @@ exports.update_Record = (req, res) => {
     })
 
     .catch(err => {
-      res.status(500).send({
+      res.status(400).send({
         message: err.message
       });
     });
@@ -98,7 +98,7 @@ exports.sign_In = (req, res) => {
 
     })
     .catch(err => {
-      res.status(500).send({
+      res.status(400).send({
         message: err.message
       });
     });
@@ -291,7 +291,7 @@ exports.getUserById = (req, res) => {
       });
     })
     .catch(err => {
-      res.status(500).send({
+      res.status(400).send({
         message: err.message
       });
     });
@@ -302,7 +302,7 @@ exports.getUserById = (req, res) => {
 
 
 // 4. authenticated api post a question with categories
-exports.createQuestion = (req, res) => {
+exports.createQuest = (req, res) => {
   if (!req.body.question_text) {
     res.status(400).send({
       "message": "Question-text cannot be blank"
@@ -314,12 +314,15 @@ exports.createQuestion = (req, res) => {
   }).then((question) => {
 
     for (let i = 0; i < req.body.categories.length; i++) {
+      
 
       categories.findOne({
+        
         where: {
           category: req.body.categories[i].category.toLowerCase()
         }
       }).then((cat) => {
+        
         if (!cat) {
           categories.create({
 
@@ -454,5 +457,66 @@ exports.updateAnswer = (req, res) => {
       res.status(400).send({
         message: err.message
       });
+    });
+};
+//
+exports.updateQuestion = (req, res, ) => {
+  if (!req.body.question_text) {
+    return res.status(400).send({
+      "message": "Question Text cannot be empty"
+    })
+  }
+  questions.update({
+      question_text: req.body.question_text
+    }, {
+      where: {
+        questId: req.params.question_id
+      }
+    }).then(() => {
+      questions.findByPk(req.params.question_id)
+        .then((question) => {
+          for (let i = 0; i < req.body.categories.length; i++) {
+            categories.findOne({
+              where: {
+                category: req.body.categories[i].category.toLowerCase()
+              }
+            }).then((cat) => {
+              if (!cat) {
+                categories.create({
+                  category: req.body.categories[i].category.toLowerCase()
+                }).then(category => {
+                  question.addCategories(category)
+                })
+              } else {
+
+                question.addCategories(cat)
+              }
+            })
+          }
+        })
+    })
+    .then(data => {
+      questions.findByPk(req.params.question_id, {
+        include: [{
+            model: categories,
+            required: false,
+            attributes: ["catId", "category"],
+            through: {
+              attributes: []
+            }
+          },
+          {
+            model: answers,
+            /* attributes: ["answer_text"], */
+          }
+        ]
+      }).then((question) => {
+        return res.status(201).send(
+          question
+        )
+      }).catch(err => {
+        err
+      })
+
     });
 };

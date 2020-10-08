@@ -29,7 +29,7 @@ module.exports = function (app) {
       checkSignUp.checkDuplicateEmail,
       checkSignUp.checkPassword
     ], */
-    controller.createQuestion
+    controller.createQuest
   );
 
 
@@ -54,6 +54,10 @@ module.exports = function (app) {
 
   // 7 . update answer of a question
   app.put("/v1/question/:question_id/answer/:answer_id", [auth.BasicAuthToken,verifyAnsUser.checkAuthenticUser], controller.updateAnswer);
+
+  // 8 . update question
+
+  app.put("/v1/question/:question_id", [auth.BasicAuthToken,verifyuser.checkAuthenticUser], controller.updateQuestion);
 
 
 
