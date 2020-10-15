@@ -4,6 +4,7 @@ const User = db.user;
 const questions = db.questions;
 const answers = db.answers;
 const categories = db.categories;
+const quest_cat = db.question_categories;
 
 const Op = db.Sequelize.Op;
 const Sequelize = require("sequelize");
@@ -309,70 +310,7 @@ exports.getUserById = (req, res) => {
 
 
 
-// 4. authenticated api post a question with categories
-exports.createQuest = (req, res) => {
-  if (!req.body.question_text) {
-    res.status(400).send({
-      "message": "Question-text cannot be blank"
-    })
-  }
-  questions.create({
-    question_text: req.body.question_text,
-    user_id: req.user.userId,
-  }).then((question) => {
 
-    for (let i = 0; i < req.body.categories.length; i++) {
-      
-
-      categories.findOne({
-        
-        where: {
-          category: req.body.categories[i].category.toLowerCase()
-        }
-      }).then((cat) => {
-        
-        if (!cat) {
-          categories.create({
-
-            category: req.body.categories[i].category.toLowerCase()
-          }).then(category => {
-            question.addCategories(category)
-          })
-
-        } else {
-          question.addCategories(cat)
-
-        }
-      })
-
-    }
-  }).then(() => {
-    /* console.log("\n"+"-----quest ID----"+question.questId+"\n")
-     */
-    questions.findOne({
-      where: {
-        question_text: req.body.question_text
-      }
-    }, {
-      include: [{
-          model: categories,
-          required: false,
-          attributes: ["category", "catId"],
-          through: {
-            attributes: []
-          }
-        }
-
-      ]
-    }).then(data => {
-      res.status(201).send({
-        data
-      })
-    })
-  }).catch(err => {
-    err
-  })
-};
 
 
 // 5. authenticated api delete answer
@@ -487,13 +425,22 @@ exports.updateQuestion = (req, res, ) => {
       "message": "Question Text cannot be empty"
     })
   }
+
+  quest_cat.destroy({
+    where: {
+      question_id: req.params.question_id
+    }
+  })
   questions.update({
       question_text: req.body.question_text
     }, {
       where: {
         questId: req.params.question_id
       }
-    }).then(() => {
+    }).
+    
+    
+    then(() => {
       questions.findByPk(req.params.question_id)
         .then((question) => {
           for (let i = 0; i < req.body.categories.length; i++) {
@@ -540,4 +487,141 @@ exports.updateQuestion = (req, res, ) => {
       })
 
     });
+};
+
+
+
+
+// 4. authenticated api post a question with categories
+/* exports.createQuest =  async(req, res) => {
+
+    
+
+
+
+  if (!req.body.question_text) {
+    res.status(400).send({
+      "message": "Question-text cannot be blank"
+    })
+  }
+
+  const quest1 =   questions.create({question_text: req.body.question_text,user_id: req.user.userId})
+
+  questions.create({
+    question_text: req.body.question_text,
+    user_id: req.user.userId,
+  }).then((question) => {
+
+    for (let i = 0; i < req.body.categories.length; i++) {
+      
+
+      categories.findOne({
+        
+        where: {
+          category: req.body.categories[i].category.toLowerCase()
+        }
+      }).then((cat) => {
+        
+        if (!cat) {
+          categories.create({
+
+            category: req.body.categories[i].category.toLowerCase()
+          }).then(category => {
+            question.addCategories(category)
+          })
+
+        } else {
+          question.addCategories(cat)
+
+        }
+      })
+
+    }
+
+    const ques = await questions.findOne({
+      where: {
+        question_text: req.body.question_text
+      }
+    }, {
+      include: [{
+          model: categories,
+          required: false,
+          attributes: ["category", "catId"],
+          through: {
+            attributes: []
+          }
+        }
+
+      ]
+    }
+    )
+    res.status(200).send(ques)
+  }).catch(err => {
+    err
+  })
+}; */
+
+exports.createQuestion = async (req, res) => {
+
+
+  console.log("text----" + req.body.question_text)
+  var question_text = req.body.question_text;
+  var ques_categories = req.body.categories;
+
+  if (!question_text) {
+      res.status(400).send({
+          Message: "please provide a question_text !"
+      });
+  }
+
+
+  const quesdata = {
+
+      user_id: req.user.userId,
+      question_text: req.body.question_text,
+
+  };
+  const ques1 = await questions.create(quesdata)
+
+  if (ques_categories) {
+      for (i = 0; i < req.body.categories.length; i++) {
+          const existCat = await categories.findOne({
+              where: {
+                  category: req.body.categories[i].category.toLowerCase()
+              }
+          })
+          if (!existCat) {
+              const cat = await categories.create({
+
+                  category: req.body.categories[i].category.toLowerCase()
+              })
+              await ques1.addCategories(cat)
+          }else{
+              await ques1.addCategories(existCat)
+
+          }
+
+
+
+          
+      }
+  }
+
+  const ques = await questions.findAll({
+      where: {
+          questId: ques1.questId
+      },
+      include: [{
+          model: categories,
+          as: "categories",
+          through: {
+              attributes: [],
+          }
+      }, ],
+  }).catch((err) => {
+      console.log(">> Error while retrieving questions: ", err);
+  });
+  res.send(ques[0]);
+
+
 };

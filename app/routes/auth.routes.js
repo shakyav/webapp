@@ -5,6 +5,7 @@ const {
   auth
 } = require("../middleware");
 const controller = require("../controllers/auth.controller");
+const ques_controller = require("../controllers/question_controller");
 const verifyUpdateUser = require("../middleware/checkUpdate");
 const verifyuser = require("../middleware/authUserDelQues");
 const verifyAnsUser = require("../middleware/authUserDelAns");
@@ -29,7 +30,8 @@ module.exports = function (app) {
       checkSignUp.checkDuplicateEmail,
       checkSignUp.checkPassword
     ], */
-    controller.createQuest
+    /* controller.createQuest */
+    controller.createQuestion
   );
 
 
