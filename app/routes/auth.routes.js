@@ -59,7 +59,7 @@ module.exports = function (app) {
 
   // 8 . update question
 
-  app.put("/v1/question/:question_id", [auth.BasicAuthToken,verifyuser.checkAuthenticUser], controller.updateQuestion);
+  app.put("/v1/question/:question_id", [auth.BasicAuthToken,verifyuser.checkAuthenticUser], controller.updateQuestion_new);
 
 
 
