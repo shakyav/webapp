@@ -581,23 +581,23 @@ exports.createQuestion = async (req, res) => {
       question_text: req.body.question_text,
 
   };
-  const ques1 = await questions.create(quesdata)
+  const question_t = await questions.create(quesdata)
 
   if (ques_categories) {
       for (i = 0; i < req.body.categories.length; i++) {
-          const existCat = await categories.findOne({
+          const catExist = await categories.findOne({
               where: {
                   category: req.body.categories[i].category.toLowerCase()
               }
           })
-          if (!existCat) {
+          if (!catExist) {
               const cat = await categories.create({
 
                   category: req.body.categories[i].category.toLowerCase()
               })
-              await ques1.addCategories(cat)
+              await question_t.addCategories(cat)
           }else{
-              await ques1.addCategories(existCat)
+              await question_t.addCategories(catExist)
 
           }
 
@@ -609,7 +609,7 @@ exports.createQuestion = async (req, res) => {
 
   const ques = await questions.findAll({
       where: {
-          questId: ques1.questId
+          questId: question_t.questId
       },
       include: [{
           model: categories,
