@@ -27,6 +27,7 @@ db.user = require("./user.model.js")(sequelize, Sequelize);
 db.questions = require("./questions.model.js")(sequelize, Sequelize);
 db.answers = require("./answer.model.js")(sequelize, Sequelize);
 db.categories = require("./category.model.js")(sequelize, Sequelize);
+db.question_categories = require("./question_categories.model.js")(sequelize, Sequelize);
 
 
 
