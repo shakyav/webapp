@@ -94,13 +94,13 @@ module.exports = function (app) {
 
 
 
-  app.post("/v1/question/:question_id/file", [auth.BasicAuthToken], upload.single("file"), fileupload.attachFileWithQuestion);
+  app.post("/v1/question/:question_id/file", [auth.BasicAuthToken,verifyuser.checkAuthenticUser], upload.single("file"), fileupload.attachFileWithQuestion);
 
-  app.post("/v1/question/:question_id/answer/:answer_id/file",[auth.BasicAuthToken],upload.single("file"),fileupload.attachFileWithAnswer);
+  app.post("/v1/question/:question_id/answer/:answer_id/file",[auth.BasicAuthToken,verifyAnsUser.checkAuthenticUser],upload.single("file"),fileupload.attachFileWithAnswer);
   
-  app.delete("/v1/question/:question_id/file/:file_id", [auth.BasicAuthToken], fileupload.deleteFileFromQuestion);
+  app.delete("/v1/question/:question_id/file/:file_id", [auth.BasicAuthToken,verifyuser.checkAuthenticUser], fileupload.deleteFileFromQuestion);
   
-  app.delete("/v1/question/:question_id/answer/:answer_id/file/:file_id", [auth.BasicAuthToken], fileupload.deleteFileFromAnswer);
+  app.delete("/v1/question/:question_id/answer/:answer_id/file/:file_id", [auth.BasicAuthToken,verifyAnsUser.checkAuthenticUser], fileupload.deleteFileFromAnswer);
 
 
 

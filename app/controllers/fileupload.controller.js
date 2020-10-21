@@ -94,6 +94,7 @@ exports.attachFileWithAnswer = async (req, res) => {
 exports.deleteFileFromQuestion = async (req, res) => {
 
     images.findByPk(req.params.file_id).then((file) => {
+        console.log("aws object name "+"========="+file.aws_s3_object_name)
         const params = {
             Bucket: "webappfilestorage",
             Key: file.aws_s3_object_name            /* 
@@ -103,7 +104,7 @@ exports.deleteFileFromQuestion = async (req, res) => {
         };
         console.log("PARAMS:", params)
 
-        await s3Client.deleteObject(params, function (err, file) {
+        s3Client.deleteObject(params, function (err, file) {
             if (err) console.log(err, err.stack); // an error occurred
             else
                 res.json({ message: 'image deleted successfully!!!' }) // successful response
@@ -111,7 +112,7 @@ exports.deleteFileFromQuestion = async (req, res) => {
 
         images.destroy({
             where: {
-                file_id: req.params.file_id,
+                image_id: req.params.file_id,
             }
         })
         
@@ -123,9 +124,10 @@ exports.deleteFileFromQuestion = async (req, res) => {
 exports.deleteFileFromAnswer = (req, res) => {
 
     images.findByPk(req.params.file_id).then((file) => {
+        console.log("aws object name "+"========="+file.aws_s3_object_name)
         const params = {
             Bucket: "webappfilestorage",
-            Key: file.s3_object_name            /* 
+            Key: file.aws_s3_object_name            /* 
                where value for 'Key' equals 'pathName1/pathName2/.../pathNameN/fileName.ext'
                - full path name to your file without '/' at the beginning
             */
@@ -138,7 +140,7 @@ exports.deleteFileFromAnswer = (req, res) => {
         });
         images.destroy({
             where: {
-                file_id: req.params.file_id,
+                image_id: req.params.file_id,
             }
         })
     })
