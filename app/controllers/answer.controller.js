@@ -69,7 +69,7 @@ exports.createAnswer = (req, res,) => {
 
 // 4. public api get answer by id for a question by id
 
-exports.getAnswerByIdQuestionById = (req, res) => {
+exports.getAnswerByIdQuestionById = async(req, res) => {
 
 
     /*
@@ -78,11 +78,16 @@ exports.getAnswerByIdQuestionById = (req, res) => {
     */
 
     /* console.log("i am here") */
-    answers.findOne({
+    await answers.findOne({
         where: {
             question_id: req.params.question_id,
             ansId: req.params.answer_id
-        }
+        },
+        include: [{
+            model: images,
+
+                    
+        }]
     }).then((answer) => {
         if (!answer) {
 
@@ -92,6 +97,7 @@ exports.getAnswerByIdQuestionById = (req, res) => {
 
         } else {
             questions.findByPk(req.params.question_id, {
+
 
 
             }).then((quest) => {
