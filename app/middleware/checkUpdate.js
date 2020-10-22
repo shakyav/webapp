@@ -8,10 +8,10 @@ checkEmailUpdate = (req, res, next) => {
         }
     }).then(user => {
         if (req.body.email_address != req.user.email_address) {
-            res.status(401).send({
+            return res.status(401).send({
                 message: "Email cannot be updated"
             });
-            return;
+            /* return; */
         }
         next();
     });

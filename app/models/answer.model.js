@@ -1,3 +1,5 @@
+
+// Answers model to represent the answers table in the database
 const { answers } = require(".");
 
 module.exports = (sequelize, Sequelize) => {
@@ -7,9 +9,6 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV1,    
         primaryKey: true,
-        /* validate:{
-          noUpdate: true
-        } */
   
       },
 
@@ -24,13 +23,5 @@ module.exports = (sequelize, Sequelize) => {
       
 
     });
-
-/*     answers.associate = function(models){
-      answer.belongsTo(models.user,{as:'user_id',foreignKey:'userId'})
-    }
-    answers.associate = function(models){
-      answer.belongsTo(models.questions,{as:'question_id',foreignKey:'questId'})
-    } */
-  
     return answers;
   };

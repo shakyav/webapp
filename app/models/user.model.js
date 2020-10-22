@@ -1,3 +1,6 @@
+// User model to represent the user table in the database
+
+
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define("users", {
 

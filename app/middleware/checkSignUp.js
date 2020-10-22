@@ -11,10 +11,10 @@ checkDuplicateEmail = (req, res, next) => {
     }
   }).then(user => {
     if (user) {
-      res.status(400).send({
+      return res.status(400).send({
         message: "Error! Email already taken by another User"
       });
-      return;
+      /* return; */
     }
 
     next();

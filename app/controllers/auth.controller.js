@@ -1,5 +1,5 @@
 const db = require("../models");
-const config = require("../dbConfig/auth.config");
+const config = require("../appConfig/auth.config");
 const User = db.user;
 const questions = db.questions;
 const answers = db.answers;
@@ -419,7 +419,7 @@ exports.updateAnswer = (req, res) => {
     });
 };
 //
-exports.updateQuestion = (req, res, ) => {
+exports.updateQuestion = (req, res ) => {
   if (!req.body.question_text) {
     return res.status(400).send({
       "message": "Question Text cannot be empty"
@@ -619,7 +619,88 @@ exports.createQuestion = async (req, res) => {
           }
       }, ],
   }).catch((err) => {
-      console.log(">> Error while retrieving questions: ", err);
+      console.log("Error while updating or fethcing the questions: ", err);
+  });
+  res.send(ques[0]);
+
+
+};
+
+
+
+
+exports.updateQuestion_new = async (req, res) => {
+
+
+  console.log("text----" + req.body.question_text)
+  var question_text = req.body.question_text;
+  var ques_categories = req.body.categories;
+
+  if (!question_text) {
+      res.status(400).send({
+          Message: "please provide a question_text !"
+      });
+  }
+
+  const catg = await quest_cat.destroy({
+    where: {
+      question_id: req.params.question_id
+    }
+  })
+
+
+  const quesdata = {
+
+      user_id: req.user.userId,
+      question_text: req.body.question_text,
+
+  };
+  const question_ut = await questions.update({
+    question_text: req.body.question_text
+  }, {
+    where: {
+      questId: req.params.question_id
+    }
+  })
+  const question_t = await questions.findByPk(req.params.question_id)
+
+  if (ques_categories) {
+      for (i = 0; i < req.body.categories.length; i++) {
+          const catExist = await categories.findOne({
+              where: {
+                  category: req.body.categories[i].category.toLowerCase()
+              }
+          })
+          if (!catExist) {
+              const cat = await categories.create({
+
+                  category: req.body.categories[i].category.toLowerCase()
+              })
+              await question_t.addCategories(cat)
+          }else{
+              await question_t.addCategories(catExist)
+
+          }
+
+
+
+          
+      }
+  }
+
+  const ques = await questions.findAll({
+      where: {
+          questId: question_t.questId
+      },
+      include: [{
+          model: categories,
+          as: "categories",
+          through: {
+              attributes: [],
+          }
+      }, ],
+  }).catch((err) => {
+      console.log(" Error while updating or fethcing the questions: ", err);
   });
   res.send(ques[0]);
 
