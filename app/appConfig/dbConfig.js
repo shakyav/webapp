@@ -1,3 +1,6 @@
+const { config } = require("aws-sdk");
+
+require('dotenv').config()
 module.exports = {
     HOST: process.env.RDS_HOSTNAME,
     USER: process.env.RDS_USERNAME,

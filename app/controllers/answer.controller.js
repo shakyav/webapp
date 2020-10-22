@@ -16,6 +16,9 @@ const quest_cat = db.question_categories;
 const Op = db.Sequelize.Op;
 const Sequelize = require("sequelize");
 
+const images = db.images
+const { s3Client } = require("../appConfig/s3.config");
+const env = require('../appConfig/s3.env.js');
 
 // 3. authenticated api create answer for a question
 
@@ -32,7 +35,7 @@ exports.createAnswer = (req, res,) => {
     }
     /* 
     checks if question id provided in the api uri is invalid then returns a custom message 
-     */ 
+     */
     else {
         questions.findByPk(req.params.questId).then((quest) => {
             if (!quest) {
@@ -99,7 +102,7 @@ exports.getAnswerByIdQuestionById = (req, res) => {
                 }
             })
         }
-        res.status(200).send(
+        return res.status(200).send(
 
             answer
 
@@ -107,25 +110,57 @@ exports.getAnswerByIdQuestionById = (req, res) => {
         )
 
     }).catch(err => {
-        err
+        return res.status(400).send(err)
     })
 };
 
 
 // 5. authenticated api delete answer
 
-exports.deleteAnswer = (req, res) => {
+exports.deleteAnswer = async (req, res) => {
 
 
+    const image_file = await images.findAll({
+        where: {
+            answer_id: req.params.answer_id
+        }
+    })
+
+    for (i = 0; i < image_file.length; i++) {
+
+
+        console.log("===========Round =======" + i)
+        //console.log("===========object lenght======="+image_file[0])
+        console.log("===========object lenght=======" + image_file[i].image_id)
+
+
+        const file = await images.findByPk(image_file[i].image_id)
+        const params = {
+
+            Bucket: env.Bucket,
+            Key: file.aws_s3_object_name
+
+        }
+
+        s3Client.deleteObject(params, function (err) {
+            if (err) console.log(err, err.stack); // an error occurred
+               /* return res.status(400).send("S3 Bucket err" + err) */
+            /* else
+                res.json({ message: 'image deleted successfully!!!' }) // successful response */
+        });
+
+    }
     /*
      searches for an answer based answer id and deletes the answer object 
      returns status as 200 and custom message
+
+     
     */
     answers.destroy({
         where: {
             ansId: req.params.answer_id
         }
-    }).then(() => {
+    }).then((answer) => {
         if (!answer) {
 
             return res.status(400).send({
@@ -133,7 +168,7 @@ exports.deleteAnswer = (req, res) => {
             });
 
         } else {
-            res.status(200).send({
+            return res.status(200).send({
                 message: "Answer Deleted"
             })
 
@@ -141,8 +176,7 @@ exports.deleteAnswer = (req, res) => {
     }
 
 
-    )
-        .catch(err => {
+    ).catch(err => {
             res.status(400).send({
                 message: err.message
             });
@@ -154,38 +188,38 @@ exports.updateAnswer = (req, res) => {
 
     answers.update({
         answer_Text: req.body.answer_Text,
-      }, {
+    }, {
         where: {
-          ansId: req.params.answer_id,
-          question_id: req.params.question_id
-        },
-      }).then(() => {
-        answers.findOne({
-          where: {
             ansId: req.params.answer_id,
             question_id: req.params.question_id
-          }
+        },
+    }).then(() => {
+        answers.findOne({
+            where: {
+                ansId: req.params.answer_id,
+                question_id: req.params.question_id
+            }
         }).then(answer => {
-          if (!answer) {
-            return res.status(404).send({
-              message: "answer cannot be updated"
-            });
-          } else {
-            res.status(201).send({
-              answer_id: req.params.answer_id,
-              question_id: req.params.question_id,
-              created_timestamp: answer.createdAt,
-              updated_timestamp: answer.updatedAt,
-              user_id: answer.user_id,
-              answer_text: answer.answer_Text
-            });
-          }
+            if (!answer) {
+                return res.status(404).send({
+                    message: "answer cannot be updated"
+                });
+            } else {
+                res.status(201).send({
+                    answer_id: req.params.answer_id,
+                    question_id: req.params.question_id,
+                    created_timestamp: answer.createdAt,
+                    updated_timestamp: answer.updatedAt,
+                    user_id: answer.user_id,
+                    answer_text: answer.answer_Text
+                });
+            }
         })
-  
-      })
-      .catch(err => {
-        res.status(400).send({
-          message: err.message
+
+    })
+        .catch(err => {
+            return res.status(400).send({
+                message: err.message
+            });
         });
-      });
-  };
+};

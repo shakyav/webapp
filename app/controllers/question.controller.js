@@ -11,9 +11,13 @@ const questions = db.questions;
 const answers = db.answers;
 const categories = db.categories;
 const quest_cat = db.question_categories;
+const images = db.images
 
 const Op = db.Sequelize.Op;
 const Sequelize = require("sequelize");
+
+const { s3Client } = require("../appConfig/s3.config");
+const env = require('../appConfig/s3.env.js');
 
 // 2. public api get all questions with categories and answers related to each question
 exports.getAllQuestions = (req, res) => {
@@ -33,6 +37,9 @@ exports.getAllQuestions = (req, res) => {
             model: answers,
 
 
+        },
+        {
+            model: images,
         }
 
         ]
@@ -77,6 +84,11 @@ exports.getQuestionById = (req, res) => {
             model: answers,
 
 
+        },
+        {
+            model: images,
+
+
         }
 
         ]
@@ -106,21 +118,73 @@ exports.getQuestionById = (req, res) => {
 
 // 6 . authenticated api delete question
 
-exports.deleteQuestion = (req, res) => {
+exports.deleteQuestion = async(req, res) => {
 
 
-    answers.findOne({
+    const ans = await answers.findOne({
         where: {
             question_id: req.params.question_id,
 
         }
-    }).then(answer => {
+    }).then(async(answer) => {
         if (!answer) {
+
+
+            const image_file = await images.findAll({
+                where: {
+                    questionQuestId : req.params.question_id
+                }
+            })
+
+            console.log("===========object lenght======="+image_file.length)
+            //console.log("===========object lenght======="+image_file[0])
+
+
+
+            for(i=0; i<image_file.length;i++){
+
+
+                console.log("===========Round ======="+i)
+                //console.log("===========object lenght======="+image_file[0])
+                console.log("===========object lenght======="+image_file[i].image_id)
+
+
+                const file = await images.findByPk(image_file[i].image_id)
+                const params = {
+
+                    Bucket: env.Bucket,
+                        Key: file.aws_s3_object_name 
+
+                }
+
+                s3Client.deleteObject(params, function (err) {
+                    if (err) console.log(err, err.stack); // an error occurred
+                    /* else
+                        res.json({ message: 'image deleted successfully!!!' }) // successful response */
+                });
+
+
+                
+ 
+        
+        
+        
+            }
+
+            
+            
+
             questions.destroy({
                 where: {
                     questId: req.params.question_id
                 }
             })
+
+            
+
+
+
+
             res.status(204).send({
                 message: "Question Deleted Successfully!!"
             });
@@ -238,7 +302,7 @@ exports.updateQuestion_new = async (req, res) => {
     var ques_categories = req.body.categories;
 
     if (!question_text) {
-        res.status(400).send({
+        return res.status(400).send({
             Message: "please provide a question_text !"
         });
     }
@@ -302,8 +366,9 @@ exports.updateQuestion_new = async (req, res) => {
         },],
     }).catch((err) => {
         console.log(" Error while updating or fethcing the questions: ", err);
+        return res.status(400).send(err)
     });
-    res.send(ques[0]);
+    return res.send(ques[0]);
 
 
 };

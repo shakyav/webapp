@@ -11,6 +11,7 @@ const { v4: uuidv4 } = require('uuid');
 var stream = require('stream');
 const s3 = require('../appConfig/s3.config');
 const { s3Client } = require("../appConfig/s3.config");
+const env = require('../appConfig/s3.env.js');
 
 
 //Attach a File to Question
@@ -19,6 +20,11 @@ exports.attachFileWithQuestion = async (req, res) => {
     const params = s3.uploadParams;
     params.Body = req.file.buffer;
     var imageID = uuidv4();
+
+
+    if(!req.file.originalname.match(/\.(jpg|jpeg|png)$/i)) {
+        return res.status(400).send("Only jpg, jpeg,pg format allowed !");
+    }
 
     const file_object = await images.create({
         image_id: imageID,
@@ -56,6 +62,10 @@ exports.attachFileWithAnswer = async (req, res) => {
     const params = s3.uploadParams;
     params.Body = req.file.buffer;
     var imageID = uuidv4();
+
+    if(!req.file.originalname.match(/\.(jpg|jpeg|png)$/i)) {
+        return res.status(400).send("Only jpg, jpeg,pg format allowed !");
+    }
     const file_object = await images.create({
         image_id: imageID,
         image_name: req.file.originalname,
@@ -96,7 +106,7 @@ exports.deleteFileFromQuestion = async (req, res) => {
     images.findByPk(req.params.file_id).then((file) => {
         console.log("aws object name "+"========="+file.aws_s3_object_name)
         const params = {
-            Bucket: "webappfilestorage",
+            Bucket: env.Bucket,
             Key: file.aws_s3_object_name            /* 
                where value for 'Key' equals 'pathName1/pathName2/.../pathNameN/fileName.ext'
                - full path name to your file without '/' at the beginning
@@ -126,7 +136,7 @@ exports.deleteFileFromAnswer = (req, res) => {
     images.findByPk(req.params.file_id).then((file) => {
         console.log("aws object name "+"========="+file.aws_s3_object_name)
         const params = {
-            Bucket: "webappfilestorage",
+            Bucket: env.Bucket,
             Key: file.aws_s3_object_name            /* 
                where value for 'Key' equals 'pathName1/pathName2/.../pathNameN/fileName.ext'
                - full path name to your file without '/' at the beginning
