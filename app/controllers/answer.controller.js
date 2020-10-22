@@ -48,7 +48,7 @@ exports.createAnswer = (req, res,) => {
     answers.create({
         answer_Text: req.body.answer_Text,
         question_id: req.params.questId,
-        questionQuestId: req.params.question_id,
+        questionQuestId: req.params.questId,
         user_id: req.user.userId
     }).then((answer) => {
 
