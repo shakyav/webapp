@@ -91,6 +91,8 @@ db.answers.belongsTo(db.questions, {
 
 db.questions.hasMany(db.images, { onDelete: "cascade" });
 
+db.answers.hasMany(db.images, { onDelete: "cascade" });
+
 db.images.belongsTo(db.user, {
   foreignKey: "user_id",
   as: "userId"

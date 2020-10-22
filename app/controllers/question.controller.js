@@ -39,7 +39,7 @@ exports.getAllQuestions = (req, res) => {
 
         },
         {
-            model: images,
+            model: images,    
         }
 
         ]

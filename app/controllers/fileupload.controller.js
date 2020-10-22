@@ -31,6 +31,7 @@ exports.attachFileWithQuestion = async (req, res) => {
         image_name: req.file.originalname,
         aws_s3_object_name: imageID + req.params.question_id + req.file.originalname,
         questionQuestId: req.params.question_id,
+        question_id: req.params.question_id,
         user_id: req.user.userId 
 
     })
@@ -71,8 +72,11 @@ exports.attachFileWithAnswer = async (req, res) => {
         image_name: req.file.originalname,
         aws_s3_object_name: imageID + req.params.question_id+req.params.answer_id + req.file.originalname,
         questionQuestionId: req.params.question_id,
+        question_id: req.params.question_id,
         user_id: req.user.userId,
-        answer_id: req.params.answer_id
+        answer_id: req.params.answer_id,
+        answerAnsId: req.params.answer_id
+
     })
 
     params.Key = file_object.aws_s3_object_name
