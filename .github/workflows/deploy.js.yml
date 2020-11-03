@@ -1,7 +1,7 @@
 name: Code Deploy CI
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 
 jobs:
