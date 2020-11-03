@@ -1,13 +1,10 @@
 #!/bin/bash
 
-# This script is used to validate application 
-sleep 3
 
-ipaddr=$(curl http://api.dev.shakyav.me/latest/meta-data/local-ipv4)
-listencount=$(netstat -an | grep 8080 | grep LISTEN | wc -l)
-
-if [ "$listencount" -lt 1 ]; then
-    exit 1
-else
-    exit 0
+echo "get the proces id"
+PID=`ps -eaf | grep "node server.js" | grep -v grep | awk '{print $2}'`
+echo "process id not empty ? $PID"
+if [[ "" !=  "$PID" ]]; then
+  echo "killing $PID"
+  sudo kill -9 $PID
 fi
