@@ -35,6 +35,11 @@ exports.getAllQuestions = (req, res) => {
         },
         {
             model: answers,
+            include:[
+                {
+                model : images
+            }
+        ]
 
 
         },
