@@ -77,3 +77,5 @@
       8. update question
 
          - /v1/question/:question_id
+      9. attach file to a question
+         - /v1/question/:question_id/file
