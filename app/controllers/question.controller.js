@@ -87,6 +87,10 @@ exports.getQuestionById = (req, res) => {
         },
         {
             model: answers,
+            include:[
+                {
+                model : images
+            }]
 
 
         },
@@ -190,11 +194,11 @@ exports.deleteQuestion = async(req, res) => {
 
 
 
-            res.status(204).send({
+            return res.status(204).send({
                 message: "Question Deleted Successfully!!"
             });
         } else {
-            res.status(404).send({
+            return res.status(404).send({
                 msg: "Question cannot be Deleted!!"
             });
         }
@@ -368,7 +372,21 @@ exports.updateQuestion_new = async (req, res) => {
             through: {
                 attributes: [],
             }
-        },],
+        },
+        {
+            model: answers,
+            include:[
+                {
+                model : images
+            }]
+
+
+        },
+        {
+            model: images,
+
+
+        }],
     }).catch((err) => {
         console.log(" Error while updating or fethcing the questions: ", err);
         return res.status(400).send(err)
