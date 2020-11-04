@@ -24,7 +24,7 @@ checkAuthenticUser = (req, res, next) => {
       console.log("\n ----------"+(ans.user_id == req.user.userId)+"\n ----------")
     if (ans.user_id != req.user.userId) {
       return res.status(401).send({
-        message: "you are not authorized to delete this answer"
+        message: "you are not authorized to delete this answer/ file"
       });
       return;
     }

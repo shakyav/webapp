@@ -22,7 +22,7 @@ checkAuthenticUser = (req, res, next) => {
       console.log("\n ----------"+(quest.user_id == req.user.userId)+"\n ----------")
     if (quest.user_id != req.user.userId) {
       return res.status(401).send({
-        message: "you are not authorized to delete/update this question"
+        message: "you are not authorized to delete/update/upload image this question"
       });
       
     }

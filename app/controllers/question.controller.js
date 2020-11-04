@@ -57,7 +57,7 @@ exports.getAllQuestions = (req, res) => {
             });
 
         }
-        res.status(201).send(
+        return res.status(201).send(
 
 
 
@@ -65,7 +65,7 @@ exports.getAllQuestions = (req, res) => {
         )
 
     }).catch(err => {
-        err
+       err
     })
 };
 
@@ -111,7 +111,7 @@ exports.getQuestionById = (req, res) => {
             });
 
         }
-        res.status(200).send(
+        return res.status(200).send(
 
 
 
@@ -204,7 +204,7 @@ exports.deleteQuestion = async(req, res) => {
         }
     })
         .catch(err => {
-            res.status(500).send({
+            return res.status(500).send({
                 message: err.message
             });
         });
@@ -294,7 +294,7 @@ exports.createQuestion = async (req, res) => {
     }).catch((err) => {
         console.log("Error while updating or fethcing the questions: ", err);
     });
-    res.send(ques[0]);
+    return res.send(ques[0]);
 
 
 };
