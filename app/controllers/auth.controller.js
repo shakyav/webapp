@@ -113,7 +113,7 @@ exports.sign_In = (req, res) => {
 // 3. authenticated api create answer for a question
 
 
-exports.createAnswer = (req, res, ) => {
+/* exports.createAnswer = (req, res, ) => {
   if (!req.body.answer_Text) {
     return res.status(400).send({
       "message": "Answer Text cannot be empty"
@@ -148,10 +148,10 @@ exports.createAnswer = (req, res, ) => {
     err
   })
 };
-
+ */
 
 // 2. public api get all questions with categories and answers related to each question
-exports.getAllQuestions = (req, res) => {
+/* exports.getAllQuestions = (req, res) => {
 
   console.log("i am here")
   questions.findAll({
@@ -191,11 +191,11 @@ exports.getAllQuestions = (req, res) => {
     err
   })
 };
-
+ */
 
 
 // 3. public api get a question by ID
-exports.getQuestionById = (req, res) => {
+/* exports.getQuestionById = (req, res) => {
 
   console.log("i am here")
   questions.findByPk(req.params.question_id, {
@@ -236,11 +236,11 @@ exports.getQuestionById = (req, res) => {
     err
   })
 };
-
+ */
 
 // 4. public api get answer by id for a question by id
 
-exports.getAnswerByIdQuestionById = (req, res) => {
+/* exports.getAnswerByIdQuestionById = (req, res) => {
 
   console.log("i am here")
   answers.findOne({
@@ -277,7 +277,7 @@ exports.getAnswerByIdQuestionById = (req, res) => {
   }).catch(err => {
     err
   })
-};
+}; */
 
 // 5 . public api get user info by id
 
@@ -315,7 +315,7 @@ exports.getUserById = (req, res) => {
 
 // 5. authenticated api delete answer
 
-exports.deleteAnswer = (req, res) => {
+/* exports.deleteAnswer = (req, res) => {
   answers.destroy({
       where: {
         ansId: req.params.answer_id
@@ -343,10 +343,10 @@ exports.deleteAnswer = (req, res) => {
       });
     });
 };
-
+ */
 // 6 . authenticated api delete question
 
-exports.deleteQuestion = (req, res) => {
+/* exports.deleteQuestion = (req, res) => {
 
 
   answers.findOne({
@@ -376,10 +376,10 @@ exports.deleteQuestion = (req, res) => {
       });
     });
 };
-
+ */
 
 // 5. authenticated api Update Answer of a question
-exports.updateAnswer = (req, res) => {
+/* exports.updateAnswer = (req, res) => {
 
   answers.update({
       answer_Text: req.body.answer_Text,
@@ -417,9 +417,9 @@ exports.updateAnswer = (req, res) => {
         message: err.message
       });
     });
-};
-//
-exports.updateQuestion = (req, res ) => {
+}; */
+
+/* exports.updateQuestion = (req, res ) => {
   if (!req.body.question_text) {
     return res.status(400).send({
       "message": "Question Text cannot be empty"
@@ -475,7 +475,7 @@ exports.updateQuestion = (req, res ) => {
           },
           {
             model: answers,
-            /* attributes: ["answer_text"], */
+            
           }
         ]
       }).then((question) => {
@@ -488,7 +488,7 @@ exports.updateQuestion = (req, res ) => {
 
     });
 };
-
+ */
 
 
 
@@ -561,7 +561,7 @@ exports.updateQuestion = (req, res ) => {
   })
 }; */
 
-exports.createQuestion = async (req, res) => {
+/* exports.createQuestion = async (req, res) => {
 
 
   console.log("text----" + req.body.question_text)
@@ -625,11 +625,11 @@ exports.createQuestion = async (req, res) => {
 
 
 };
+ */
 
 
 
-
-exports.updateQuestion_new = async (req, res) => {
+/* exports.updateQuestion_new = async (req, res) => {
 
 
   console.log("text----" + req.body.question_text)
@@ -705,4 +705,4 @@ exports.updateQuestion_new = async (req, res) => {
   res.send(ques[0]);
 
 
-};
+}; */
