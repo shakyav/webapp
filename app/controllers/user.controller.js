@@ -35,7 +35,7 @@ exports.sign_Up = (req, res) => {
   
       }).then(user => {
   
-        res.status(201).send({
+        return res.status(201).send({
           userId: user.userId,
           first_name: user.first_name,
           last_name: user.last_name,
@@ -47,7 +47,7 @@ exports.sign_Up = (req, res) => {
       .catch(err => {
   
   
-        res.status(400).send({
+        return res.status(400).send({
           message: err.message
         });
       });
@@ -82,7 +82,7 @@ exports.sign_Up = (req, res) => {
             email_address: req.body.email_address
           }
         }).then(user => {
-          res.status(201).send({
+          return res.status(201).send({
             first_name: user.first_name,
             last_name: user.last_name,
             email_address: user.email_address,
@@ -91,7 +91,7 @@ exports.sign_Up = (req, res) => {
       })
   
       .catch(err => {
-        res.status(400).send({
+        return res.status(400).send({
           message: err.message
         });
       });
@@ -122,7 +122,7 @@ exports.sign_Up = (req, res) => {
           });
         }
   
-        res.status(200).send({
+        return res.status(200).send({
           userId: user.userId,
           first_name: user.first_name,
           last_name: user.last_name,
@@ -131,7 +131,7 @@ exports.sign_Up = (req, res) => {
   
       })
       .catch(err => {
-        res.status(400).send({
+        return res.status(400).send({
           message: err.message
         });
       });
@@ -149,7 +149,7 @@ exports.getUserById = (req, res) => {
             message: "User Not found."
           });
         }
-        res.status(200).send({
+        return res.status(200).send({
           id: user.user_id,
           first_name: user.first_name,
           last_name: user.last_name,
@@ -159,7 +159,7 @@ exports.getUserById = (req, res) => {
         });
       })
       .catch(err => {
-        res.status(400).send({
+        return res.status(400).send({
           message: err.message
         });
       });

@@ -132,6 +132,8 @@ exports.deleteAnswer = async (req, res) => {
         }
     })
 
+    // loop iterates over all the images attached to the question and deletes them one by one
+
     for (i = 0; i < image_file.length; i++) {
 
 
@@ -183,7 +185,7 @@ exports.deleteAnswer = async (req, res) => {
 
 
     ).catch(err => {
-            res.status(400).send({
+            return res.status(400).send({
                 message: err.message
             });
         });
