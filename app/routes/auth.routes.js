@@ -30,7 +30,7 @@ module.exports = function (app) {
   // authenticated
   // 1 . post question
   app.post(
-    "/v1/question",
+    "/v2/question",
     [auth.BasicAuthToken],
     /* [
       checkSignUp.checkDuplicateEmail,
@@ -43,7 +43,7 @@ module.exports = function (app) {
 
   // 2 . post answer of a question
   app.post(
-    "/v1/question/:questId/answer",
+    "/v2/question/:questId/answer",
     [auth.BasicAuthToken],
     /* [
       checkSignUp.checkDuplicateEmail,
@@ -52,34 +52,34 @@ module.exports = function (app) {
     ans_controller.createAnswer
   );
   // 3 . update user record
-  app.put("/v1/user/self", [auth.BasicAuthToken, verifyUpdateUser.checkEmailUpdate, checkSignUp.checkPassword], controller.update_Record);
+  app.put("/v2/user/self", [auth.BasicAuthToken, verifyUpdateUser.checkEmailUpdate, checkSignUp.checkPassword], controller.update_Record);
   // 4. get user info 
-  app.get("/v1/user/self", [auth.BasicAuthToken], controller.sign_In);
+  app.get("/v2/user/self", [auth.BasicAuthToken], controller.sign_In);
   // 5. delete answer for a question
-  app.delete("/v1/question/:question_id/answer/:answer_id", [auth.BasicAuthToken, verifyAnsUser.checkAuthenticUser], ans_controller.deleteAnswer);
+  app.delete("/v2/question/:question_id/answer/:answer_id", [auth.BasicAuthToken, verifyAnsUser.checkAuthenticUser], ans_controller.deleteAnswer);
   // 6 . delete question
-  app.delete("/v1/question/:question_id", [auth.BasicAuthToken, verifyuser.checkAuthenticUser], quest_controller.deleteQuestion);
+  app.delete("/v2/question/:question_id", [auth.BasicAuthToken, verifyuser.checkAuthenticUser], quest_controller.deleteQuestion);
 
   // 7 . update answer of a question
-  app.put("/v1/question/:question_id/answer/:answer_id", [auth.BasicAuthToken, verifyAnsUser.checkAuthenticUser], ans_controller.updateAnswer);
+  app.put("/v2/question/:question_id/answer/:answer_id", [auth.BasicAuthToken, verifyAnsUser.checkAuthenticUser], ans_controller.updateAnswer);
 
   // 8 . update question
 
-  app.put("/v1/question/:question_id", [auth.BasicAuthToken, verifyuser.checkAuthenticUser], quest_controller.updateQuestion_new);
+  app.put("/v2/question/:question_id", [auth.BasicAuthToken, verifyuser.checkAuthenticUser], quest_controller.updateQuestion_new);
 
 
 
   // public
   // 1 . get all questions
-  app.get("/v1/questions", quest_controller.getAllQuestions)
+  app.get("/v2/questions", quest_controller.getAllQuestions)
   // 2 . get question by id
-  app.get("/v1/questions/:question_id", quest_controller.getQuestionById)
+  app.get("/v2/questions/:question_id", quest_controller.getQuestionById)
   // 3. get answer by id by question
-  app.get("/v1/question/:question_id/answer/:answer_id", ans_controller.getAnswerByIdQuestionById);
+  app.get("/v2/question/:question_id/answer/:answer_id", ans_controller.getAnswerByIdQuestionById);
 
   // 4. post a user 
   app.post(
-    "/v1/user",
+    "/v2/user",
     [
       checkSignUp.checkDuplicateEmail,
       checkSignUp.checkPassword
@@ -88,19 +88,19 @@ module.exports = function (app) {
   );
 
   // 5 . get user info by Id
-  app.get("/v1/user/:user_id", controller.getUserById);
+  app.get("/v2/user/:user_id", controller.getUserById);
 
   /* app.post("/v1/questions/image",upload.single("file"),fileupload.doUpload); */
 
 
 
-  app.post("/v1/question/:question_id/file", [auth.BasicAuthToken,verifyuser.checkAuthenticUser], upload.single("file"), fileupload.attachFileWithQuestion);
+  app.post("/v2/question/:question_id/file", [auth.BasicAuthToken,verifyuser.checkAuthenticUser], upload.single("file"), fileupload.attachFileWithQuestion);
 
-  app.post("/v1/question/:question_id/answer/:answer_id/file",[auth.BasicAuthToken,verifyAnsUser.checkAuthenticUser],upload.single("file"),fileupload.attachFileWithAnswer);
+  app.post("/v2/question/:question_id/answer/:answer_id/file",[auth.BasicAuthToken,verifyAnsUser.checkAuthenticUser],upload.single("file"),fileupload.attachFileWithAnswer);
   
-  app.delete("/v1/question/:question_id/file/:file_id", [auth.BasicAuthToken,verifyuser.checkAuthenticUser], fileupload.deleteFileFromQuestion);
+  app.delete("/v2/question/:question_id/file/:file_id", [auth.BasicAuthToken,verifyuser.checkAuthenticUser], fileupload.deleteFileFromQuestion);
   
-  app.delete("/v1/question/:question_id/answer/:answer_id/file/:file_id", [auth.BasicAuthToken,verifyAnsUser.checkAuthenticUser], fileupload.deleteFileFromAnswer);
+  app.delete("/v2/question/:question_id/answer/:answer_id/file/:file_id", [auth.BasicAuthToken,verifyAnsUser.checkAuthenticUser], fileupload.deleteFileFromAnswer);
 
 
 
