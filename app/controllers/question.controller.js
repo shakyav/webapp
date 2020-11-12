@@ -6,7 +6,8 @@
 
 const db = require("../models");
 const config = require("../appConfig/auth.config");
-const Metrics = require("../../metrics");
+var SDC = require('statsd-client');
+Metrics = new SDC({port: 8125});
 const User = db.user;
 const questions = db.questions;
 const answers = db.answers;

@@ -19,7 +19,9 @@ const Sequelize = require("sequelize");
 const images = db.images
 const { s3Client } = require("../appConfig/s3.config");
 const env = require('../appConfig/s3.env.js');
-const metrics = require("../../metrics");
+var SDC = require('statsd-client');
+Metrics = new SDC({port: 8125});
+/* const metrics = require("../../metrics"); */
 /* var log4js = require("../logger") */
 /* const logger = log4js.getLogger('logs'); */
 // 3. authenticated api create answer for a question
