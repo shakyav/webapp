@@ -1,5 +1,6 @@
 const db = require("../models");
 const config = require("../appConfig/auth.config");
+const Metrics = require("../../metrics");
 const User = db.user;
 const questions = db.questions;
 const answers = db.answers;
@@ -14,6 +15,10 @@ var bcrypt = require("bcryptjs");
 
 // 1 . public api create user
 exports.sign_Up = (req, res) => {
+
+Metrics.increment("User.POST.createUser");
+let timer = new Date();
+let db_timer = new Date(); 
   console.log("create user")
   User.create({
 
@@ -45,6 +50,8 @@ exports.sign_Up = (req, res) => {
 
 //1 . authenticated api update user
 exports.update_Record = (req, res) => {
+
+  Metrics.increment("User.PUT.updateUser");
   // Save User to Database
   User.update({
       first_name: req.body.first_name,
@@ -77,6 +84,8 @@ exports.update_Record = (req, res) => {
 
 // 2 . authenticated api sign in user
 exports.sign_In = (req, res) => {
+
+  Metrics.increment("User.GET.getUserInformation");
   console.log("sign in user")
   User.findOne({
       where: {
@@ -108,6 +117,8 @@ exports.sign_In = (req, res) => {
 // 5 . public api get user info by id
 
 exports.getUserById = (req, res) => {
+
+Metrics.increment("User.GET.getUserInfo");
 
   User.findByPk(req.params.user_id)
     .then(user => {
