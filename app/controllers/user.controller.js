@@ -6,6 +6,7 @@
 const db = require("../models");
 const config = require("../appConfig/auth.config");
 const User = db.user;
+const metrics = require("../metrics");
 /* const questions = db.questions;
 const answers = db.answers;
 const categories = db.categories;
@@ -20,6 +21,9 @@ var bcrypt = require("bcryptjs");
 
 // public api to create a user with required details
 exports.sign_Up = (req, res) => {
+
+
+metrics.increment("User.POST.createUser");
     console.log("create user")
 
     /* this calls the create function of sequelize and insert the user information into user table
@@ -59,6 +63,7 @@ exports.sign_Up = (req, res) => {
 
   exports.update_Record = (req, res) => {
 
+    metrics.increment("User.PUT.updateUser");
 
     /* this calls the update function of sequelize and insert the user information into user table based on
        where clause and returns the user details as the response , status code 201 signifies the user object 
@@ -101,6 +106,7 @@ exports.sign_Up = (req, res) => {
   // 2 . authenticated api sign in user
 
   exports.sign_In = (req, res) => {
+    metrics.increment("User.GET.getUserInformation");
 
     /* console.log("sign in user") */
 
@@ -141,6 +147,7 @@ exports.sign_Up = (req, res) => {
 // 5 . public api get user info by id
 
 exports.getUserById = (req, res) => {
+  metrics.increment("User.GET.getUserInfo");
 
     User.findByPk(req.params.user_id)
       .then(user => {
