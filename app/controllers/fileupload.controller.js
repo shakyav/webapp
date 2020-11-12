@@ -12,7 +12,9 @@ var stream = require('stream');
 const s3 = require('../appConfig/s3.config');
 const { s3Client } = require("../appConfig/s3.config");
 const env = require('../appConfig/s3.env.js');
-
+const metrics = require("../../metrics");
+/* var log4js = require("../logger") */
+/* const logger = log4js.getLogger('logs'); */
 
 //Attach a File to Question
 exports.attachFileWithQuestion = async (req, res) => {

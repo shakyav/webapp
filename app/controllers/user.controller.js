@@ -16,6 +16,8 @@ const Op = db.Sequelize.Op;
 const Sequelize = require("sequelize");
 
 var bcrypt = require("bcryptjs");
+/* var log4js = require("../logger") */
+/* const logger = log4js.getLogger('logs'); */
 
 
 
@@ -24,6 +26,8 @@ exports.sign_Up = (req, res) => {
 
 
 metrics.increment("User.POST.createUser");
+let timer = new Date();
+let db_timer = new Date();  
     console.log("create user")
 
     /* this calls the create function of sequelize and insert the user information into user table
@@ -38,6 +42,7 @@ metrics.increment("User.POST.createUser");
   
   
       }).then(user => {
+        metrics.timing('User.POST.dbcreateUser',db_timer)
   
         return res.status(201).send({
           userId: user.userId,
@@ -46,7 +51,10 @@ metrics.increment("User.POST.createUser");
           email_address: user.email_address,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt
-        });
+        }
+        
+        ),metrics.timing("User.POST.createUser",timer);
+        
       })
       .catch(err => {
   

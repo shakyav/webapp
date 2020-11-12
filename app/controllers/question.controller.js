@@ -6,16 +6,19 @@
 
 const db = require("../models");
 const config = require("../appConfig/auth.config");
+const metrics = require("../../metrics");
 const User = db.user;
 const questions = db.questions;
 const answers = db.answers;
 const categories = db.categories;
 const quest_cat = db.question_categories;
 const images = db.images
+/* var log4js = require("../logger") */
+/* const logger = log4js.getLogger('logs'); */
 
 const Op = db.Sequelize.Op;
 const Sequelize = require("sequelize");
-const metrics = require("../../metrics");
+
 
 const { s3Client } = require("../appConfig/s3.config");
 const env = require('../appConfig/s3.env.js');
@@ -23,7 +26,7 @@ const env = require('../appConfig/s3.env.js');
 // 2. public api get all questions with categories and answers related to each question
 exports.getAllQuestions = (req, res) => {
 
-    metrics.increment("Question.GET.getAllQuestions");
+metrics.increment("Question.GET.getAllQuestions");
 
     console.log("i am here")
     questions.findAll({
