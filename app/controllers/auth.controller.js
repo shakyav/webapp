@@ -8,6 +8,8 @@ const questions = db.questions;
 const answers = db.answers;
 const categories = db.categories;
 const quest_cat = db.question_categories;
+const log = require("../../logs")
+const logger = log.getLogger('logs');
 
 const Op = db.Sequelize.Op;
 const Sequelize = require("sequelize");
@@ -19,6 +21,7 @@ var bcrypt = require("bcryptjs");
 exports.sign_Up = (req, res) => {
 
 Metrics.increment('User.POST.sign_Up');
+logger.info("User Signup");
 let timer = new Date();
 let db_timer = new Date(); 
   console.log("create user")

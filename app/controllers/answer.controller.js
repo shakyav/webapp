@@ -67,12 +67,13 @@ exports.createAnswer = (req, res,) => {
             });
 
         }
-        Metrics.timing('answers.POST.createAnswer',timer);
-        return res.status(201).send({
+        
+        res.status(201).send({
             answer: answer
         })
+        Metrics.timing('answers.POST.createAnswer',timer);
     }).catch((err) => {
-        err
+        return err
     })
 };
 
@@ -122,13 +123,14 @@ exports.getAnswerByIdQuestionById = async(req, res) => {
                 }
             })
         }
-        Metrics.timing('answers.GET.getAnswerByIdQuestionById',timer);
-        return res.status(200).send(
+        
+        res.status(200).send(
 
             answer
 
 
         )
+        Metrics.timing('answers.GET.getAnswerByIdQuestionById',timer);
 
     }).catch(err => {
         return res.status(400).send(err)
@@ -202,10 +204,11 @@ exports.deleteAnswer = async (req, res) => {
             });
 
         } else {
-            Metrics.timing('answers.DELETE.getAnswerByIdQuestionById',timer);
-            return res.status(200).send({
+            
+            res.status(200).send({
                 message: "Answer Deleted"
             })
+            Metrics.timing('answers.DELETE.getAnswerByIdQuestionById',timer);
 
         }
     }
