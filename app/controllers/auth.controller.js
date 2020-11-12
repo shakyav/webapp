@@ -113,7 +113,8 @@ exports.sign_In = (req, res) => {
         first_name: user.first_name,
         last_name: user.last_name,
         email_address: user.email_address,
-      },Metrics.timing("User.POST.sign_In",timer));
+      });
+      Metrics.timing("User.POST.sign_In",timer)
 
     })
     .catch(err => {
