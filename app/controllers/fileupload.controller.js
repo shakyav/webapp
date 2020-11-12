@@ -21,7 +21,7 @@ Metrics = new SDC({port: 8125});
 //Attach a File to Question
 exports.attachFileWithQuestion = async (req, res) => {
 
-    metrics.increment("Images.POST.attachFileWithQuestion");
+    metrics.increment("images.POST.attachFileWithQuestion");
     let timer = new Date();
 let db_timer = new Date(); 
     const s3Client = s3.s3Client;
@@ -68,7 +68,7 @@ let db_timer = new Date();
 //Attach a File to Answer
 exports.attachFileWithAnswer = async (req, res) => {
 
-    metrics.increment("Images.POST.attachFileWithAnswer");
+    metrics.increment("images.POST.attachFileWithAnswer");
     let timer = new Date();
 let db_timer = new Date(); 
     const s3Client = s3.s3Client;
@@ -119,7 +119,7 @@ let db_timer = new Date();
 //Delete a file from Question
 exports.deleteFileFromQuestion = async (req, res) => {
 
-    metrics.increment("Images.DELETE.deleteFileFromQuestion");
+    metrics.increment("images.DELETE.deleteFileFromQuestion");
     let timer = new Date();
 let db_timer = new Date(); 
 
@@ -153,7 +153,7 @@ let db_timer = new Date();
 //Delete a file from Answer
 exports.deleteFileFromAnswer = (req, res) => {
 
-    metrics.increment("Images.DELETE.deleteFileFromAnswer");
+    metrics.increment("images.DELETE.deleteFileFromAnswer");
     let timer = new Date();
 let db_timer = new Date(); 
 
