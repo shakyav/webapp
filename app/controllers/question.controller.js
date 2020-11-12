@@ -29,6 +29,7 @@ const env = require('../appConfig/s3.env.js');
 exports.getAllQuestions = (req, res) => {
 
 Metrics.increment('questions.GET.getAllQuestions');
+logger.info("Create Question");
 let timer = new Date();
 let db_timer = new Date(); 
 
@@ -87,6 +88,7 @@ let db_timer = new Date();
 exports.getQuestionById = (req, res) => {
 
 Metrics.increment('questions.GET.getQuestionById');
+logger.info("Retrieve Question by Id");
 let timer = new Date();
 let db_timer = new Date(); 
 
@@ -147,6 +149,7 @@ let db_timer = new Date();
 
 exports.deleteQuestion = async(req, res) => {
 Metrics.increment('questions.DELETE.deleteQuestion');
+logger.info("delete question");
 let timer = new Date();
 let db_timer = new Date(); 
 
@@ -243,6 +246,7 @@ let db_timer = new Date();
 exports.createQuestion = async (req, res) => {
 
 Metrics.increment('questions.POST.createQuestion');
+logger.info("Create question");
 let timer = new Date();
 let db_timer = new Date(); 
 
@@ -338,6 +342,7 @@ let db_timer = new Date();
 exports.updateQuestion_new = async (req, res) => {
 
 Metrics.increment('questions.PUT.updateQuestion_new');
+logger.info("Update question");
 let timer = new Date();
 
 
