@@ -19,11 +19,12 @@ const Sequelize = require("sequelize");
 const images = db.images
 const { s3Client } = require("../appConfig/s3.config");
 const env = require('../appConfig/s3.env.js');
-
+const metrics = require("../../metrics");
 // 3. authenticated api create answer for a question
 
 
 exports.createAnswer = (req, res,) => {
+    metrics.increment("Answer.POST.createAnswer");
 
     /* 
     checks if answer text is empty then returns a custom message 
@@ -71,6 +72,8 @@ exports.createAnswer = (req, res,) => {
 
 exports.getAnswerByIdQuestionById = async(req, res) => {
 
+    metrics.increment("Answer.GET.getAnswerByIdQuestionById");
+    
 
     /*
      searches for an answer based on the combination of question id and answer id 
@@ -125,6 +128,9 @@ exports.getAnswerByIdQuestionById = async(req, res) => {
 
 exports.deleteAnswer = async (req, res) => {
 
+
+    metrics.increment("Answer.DELETE.deleteAnswer");
+    
 
     const image_file = await images.findAll({
         where: {
@@ -193,6 +199,8 @@ exports.deleteAnswer = async (req, res) => {
 
 // 5. authenticated api Update Answer of a question
 exports.updateAnswer = (req, res) => {
+    metrics.increment("Answer.PUT.updateAnswer");
+
 
     answers.update({
         answer_Text: req.body.answer_Text,

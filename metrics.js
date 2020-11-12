@@ -13,4 +13,17 @@ var SDC = require('statsd-client'),
       metrics.increment("Question.GET.getAllQuestions");
       metrics.increment("Question.GET.getQuestionById");
       metrics.increment("Question.DELETE.deleteQuestion");
+
+      //Counter for Answer API 
+      metrics.increment("Answer.POST.createAnswer");
+      metrics.increment("Answer.PUT.updateAnswer");
+      metrics.increment("Answer.GET.getAnswerByIdQuestionById");
+      metrics.increment("Answer.DELETE.deleteAnswer");
+
+     //Counter for File API 
+      metrics.increment("Images.POST.attachFileWithQuestion");
+      metrics.increment("Images.POST.attachFileWithAnswer");
+   
+      metrics.increment("Images.DELETE.deleteFileFromQuestion");
+      metrics.increment("Images.DELETE.deleteFileFromAnswer");
       

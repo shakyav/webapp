@@ -16,6 +16,8 @@ const env = require('../appConfig/s3.env.js');
 
 //Attach a File to Question
 exports.attachFileWithQuestion = async (req, res) => {
+
+    metrics.increment("Images.POST.attachFileWithQuestion");
     const s3Client = s3.s3Client;
     const params = s3.uploadParams;
     params.Body = req.file.buffer;
@@ -59,6 +61,8 @@ exports.attachFileWithQuestion = async (req, res) => {
 
 //Attach a File to Answer
 exports.attachFileWithAnswer = async (req, res) => {
+
+    metrics.increment("Images.POST.attachFileWithAnswer");
     const s3Client = s3.s3Client;
     const params = s3.uploadParams;
     params.Body = req.file.buffer;
@@ -107,6 +111,8 @@ exports.attachFileWithAnswer = async (req, res) => {
 //Delete a file from Question
 exports.deleteFileFromQuestion = async (req, res) => {
 
+    metrics.increment("Images.DELETE.deleteFileFromQuestion");
+
     images.findByPk(req.params.file_id).then((file) => {
         console.log("aws object name "+"========="+file.aws_s3_object_name)
         const params = {
@@ -136,6 +142,8 @@ exports.deleteFileFromQuestion = async (req, res) => {
 
 //Delete a file from Answer
 exports.deleteFileFromAnswer = (req, res) => {
+
+    metrics.increment("Images.DELETE.deleteFileFromAnswer");
 
     images.findByPk(req.params.file_id).then((file) => {
         console.log("aws object name "+"========="+file.aws_s3_object_name)
