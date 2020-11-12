@@ -26,7 +26,7 @@ const env = require('../appConfig/s3.env.js');
 // 2. public api get all questions with categories and answers related to each question
 exports.getAllQuestions = (req, res) => {
 
-metrics.increment("Question.GET.getAllQuestions");
+metrics.increment("questions.GET.getAllQuestions");
 
     console.log("i am here")
     questions.findAll({
@@ -80,7 +80,7 @@ metrics.increment("Question.GET.getAllQuestions");
 // 3. public api get a question by ID
 exports.getQuestionById = (req, res) => {
 
-    metrics.increment("Question.GET.getQuestionById");
+metrics.increment("questions.GET.getQuestionById");
 
     console.log("i am here")
     questions.findByPk(req.params.question_id, {
@@ -136,7 +136,7 @@ exports.getQuestionById = (req, res) => {
 // 6 . authenticated api delete question
 
 exports.deleteQuestion = async(req, res) => {
-    metrics.increment("Question.DELETE.deleteQuestion");
+metrics.increment("questions.DELETE.deleteQuestion");
 
 
     const ans = await answers.findOne({
@@ -225,7 +225,7 @@ exports.deleteQuestion = async(req, res) => {
 
 exports.createQuestion = async (req, res) => {
 
-    metrics.increment("Question.POST.createQuestion");
+metrics.increment("questions.POST.createQuestion");
 
     /* This function recieves the question text and question categories in the request body
     first it checks if the question_text is not empty if is the it returns a massage with status 400
@@ -316,7 +316,7 @@ exports.createQuestion = async (req, res) => {
 // fixed in a5 branch
 exports.updateQuestion_new = async (req, res) => {
 
-    metrics.increment("Question.PUT.updateQuestion_new");
+metrics.increment("questions.PUT.updateQuestion_new");
 
     console.log("text----" + req.body.question_text)
     var question_text = req.body.question_text;

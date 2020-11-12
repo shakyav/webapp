@@ -8,11 +8,11 @@ var SDC = require('statsd-client'),
       metrics.increment("User.GET.getUserInfo");
 
       //Counter for Question API 
-      metrics.increment("Question.POST.createQuestion");
-      metrics.increment("Question.PUT.updateQuestion_new");
-      metrics.increment("Question.GET.getAllQuestions");
-      metrics.increment("Question.GET.getQuestionById");
-      metrics.increment("Question.DELETE.deleteQuestion");
+      metrics.increment("questions.POST.createQuestion");
+      metrics.increment("questions.PUT.updateQuestion_new");
+      metrics.increment("questions.GET.getAllQuestions");
+      metrics.increment("questions.GET.getQuestionById");
+      metrics.increment("questions.DELETE.deleteQuestion");
 
       //Counter for Answer API 
       metrics.increment("Answer.POST.createAnswer");
