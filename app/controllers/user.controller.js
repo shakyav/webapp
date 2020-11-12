@@ -71,7 +71,7 @@ let db_timer = new Date();
 
   exports.update_Record = (req, res) => {
 
-    metrics.increment("User.PUT.updateUser");
+ 
 
     /* this calls the update function of sequelize and insert the user information into user table based on
        where clause and returns the user details as the response , status code 201 signifies the user object 
@@ -114,7 +114,7 @@ let db_timer = new Date();
   // 2 . authenticated api sign in user
 
   exports.sign_In = (req, res) => {
-    metrics.increment("User.GET.getUserInformation");
+
 
     /* console.log("sign in user") */
 
