@@ -60,6 +60,7 @@ let db_timer = new Date();
 exports.update_Record = (req, res) => {
 
   Metrics.increment('User.PUT.update_Record');
+  logger.info("User Update");
   let timer = new Date();
   let db_timer = new Date();
   // Save User to Database
@@ -98,6 +99,7 @@ exports.update_Record = (req, res) => {
 exports.sign_In = (req, res) => {
 
   Metrics.increment('User.GET.sign_In');
+  logger.info("User Sign In");
   let timer = new Date();
   let db_timer = new Date(); 
   console.log("sign in user")
@@ -135,6 +137,8 @@ exports.sign_In = (req, res) => {
 exports.getUserById = (req, res) => {
 
 Metrics.increment('User.GET.getUserById');
+
+logger.info("Retrieve USer by Id");
 
 let timer = new Date();
 let db_timer = new Date(); 
