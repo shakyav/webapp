@@ -28,7 +28,7 @@ Metrics = new SDC({port: 8125});
 
 
 exports.createAnswer = (req, res,) => {
-    Metrics.increment("Answer.POST.createAnswer");
+    Metrics.increment("answers.POST.createAnswer");
     let timer = new Date();
     let db_timer = new Date(); 
 
@@ -78,7 +78,7 @@ exports.createAnswer = (req, res,) => {
 
 exports.getAnswerByIdQuestionById = async(req, res) => {
 
-    Metrics.increment("Answer.GET.getAnswerByIdQuestionById");
+    Metrics.increment("answers.GET.getAnswerByIdQuestionById");
     let timer = new Date();
     let db_timer = new Date(); 
     
@@ -137,7 +137,7 @@ exports.getAnswerByIdQuestionById = async(req, res) => {
 exports.deleteAnswer = async (req, res) => {
 
 
-    Metrics.increment("Answer.DELETE.deleteAnswer");
+    Metrics.increment("answers.DELETE.deleteAnswer");
     let timer = new Date();
     let db_timer = new Date(); 
     
@@ -209,7 +209,7 @@ exports.deleteAnswer = async (req, res) => {
 
 // 5. authenticated api Update Answer of a question
 exports.updateAnswer = (req, res) => {
-    Metrics.increment("Answer.PUT.updateAnswer");
+    Metrics.increment("answers.PUT.updateAnswer");
     let timer = new Date();
     let db_timer = new Date(); 
 
