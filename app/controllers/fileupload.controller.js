@@ -22,6 +22,8 @@ Metrics = new SDC({port: 8125});
 exports.attachFileWithQuestion = async (req, res) => {
 
     metrics.increment("Images.POST.attachFileWithQuestion");
+    let timer = new Date();
+let db_timer = new Date(); 
     const s3Client = s3.s3Client;
     const params = s3.uploadParams;
     params.Body = req.file.buffer;
@@ -67,6 +69,8 @@ exports.attachFileWithQuestion = async (req, res) => {
 exports.attachFileWithAnswer = async (req, res) => {
 
     metrics.increment("Images.POST.attachFileWithAnswer");
+    let timer = new Date();
+let db_timer = new Date(); 
     const s3Client = s3.s3Client;
     const params = s3.uploadParams;
     params.Body = req.file.buffer;
@@ -116,6 +120,8 @@ exports.attachFileWithAnswer = async (req, res) => {
 exports.deleteFileFromQuestion = async (req, res) => {
 
     metrics.increment("Images.DELETE.deleteFileFromQuestion");
+    let timer = new Date();
+let db_timer = new Date(); 
 
     images.findByPk(req.params.file_id).then((file) => {
         console.log("aws object name "+"========="+file.aws_s3_object_name)
@@ -148,6 +154,8 @@ exports.deleteFileFromQuestion = async (req, res) => {
 exports.deleteFileFromAnswer = (req, res) => {
 
     metrics.increment("Images.DELETE.deleteFileFromAnswer");
+    let timer = new Date();
+let db_timer = new Date(); 
 
     images.findByPk(req.params.file_id).then((file) => {
         console.log("aws object name "+"========="+file.aws_s3_object_name)
