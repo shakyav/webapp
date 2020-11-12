@@ -1,7 +1,7 @@
-var SDC = require('statsd-client'),
-	metrics = new SDC({port: 8125});
-
-     //Counter for User API 
+var SDC = require('statsd-client');
+     metrics = new SDC({port: 8125});
+     
+       //Counter for User API 
       metrics.increment("User.POST.sign_Up");
       metrics.increment("User.PUT.update_Record");
       metrics.increment("User.GET.sign_In");
