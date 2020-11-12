@@ -28,7 +28,7 @@ const env = require('../appConfig/s3.env.js');
 // 2. public api get all questions with categories and answers related to each question
 exports.getAllQuestions = (req, res) => {
 
-Metrics.increment("questions.GET.getAllQuestions");
+Metrics.increment('questions.GET.getAllQuestions');
 let timer = new Date();
 let db_timer = new Date(); 
 
@@ -60,7 +60,7 @@ let db_timer = new Date();
         ]
 
     }).then((question) => {
-        Metrics.timing("User.GET.getAllQuestions",db_timer)
+        Metrics.timing('questions.GET.dbgetAllQuestions',db_timer)
         if (!question) {
 
             return res.status(404).send({
@@ -68,14 +68,15 @@ let db_timer = new Date();
             });
 
         }
-        return res.status(201).send(
+        res.status(201).send(
 
 
 
             question
         )
+        Metrics.timing('questions.GET.getAllQuestions',timer)
 
-    },Metrics.timing("User.GET.getAllQuestions",timer)).catch(err => {
+    }).catch(err => {
        err
     })
 };
@@ -85,11 +86,11 @@ let db_timer = new Date();
 // 3. public api get a question by ID
 exports.getQuestionById = (req, res) => {
 
-Metrics.increment("questions.GET.getQuestionById");
+Metrics.increment('questions.GET.getQuestionById');
 let timer = new Date();
 let db_timer = new Date(); 
 
-    console.log("i am here")
+    /* console.log("i am here") */
     questions.findByPk(req.params.question_id, {
 
         include: [{
@@ -118,7 +119,7 @@ let db_timer = new Date();
         ]
 
     }).then((question) => {
-        Metrics.timing("User.GET.getQuestionById",db_timer)
+        Metrics.timing('questions.GET.dbgetQuestionById',db_timer)
 
         if (!question) {
 
@@ -127,15 +128,16 @@ let db_timer = new Date();
             });
 
         }
-        return res.status(200).send(
+        res.status(200).send(
 
 
 
             question
         )
+        Metrics.timing('questions.GET.getQuestionById',timer);
 
-    },Metrics.timing("User.GET.getQuestionById",timer)).catch(err => {
-        err
+    }).catch(err => {
+        return err
     })
 };
 
@@ -144,7 +146,7 @@ let db_timer = new Date();
 // 6 . authenticated api delete question
 
 exports.deleteQuestion = async(req, res) => {
-Metrics.increment("questions.DELETE.deleteQuestion");
+Metrics.increment('questions.DELETE.deleteQuestion');
 let timer = new Date();
 let db_timer = new Date(); 
 
@@ -184,12 +186,14 @@ let db_timer = new Date();
                         Key: file.aws_s3_object_name 
 
                 }
+                let s3_timer = new Date();
 
                 s3Client.deleteObject(params, function (err) {
                     if (err) console.log(err, err.stack); // an error occurred
                     /* else
                         res.json({ message: 'image deleted successfully!!!' }) // successful response */
                 });
+                Metrics.timing('questions.DELETE.s3_file_deleteQuestion',s3_timer);
 
 
                 
@@ -201,7 +205,7 @@ let db_timer = new Date();
 
             
             
-
+            Metrics.timing('questions.DELETE.dbdeleteQuestion',db_timer);
             questions.destroy({
                 where: {
                     questId: req.params.question_id
@@ -213,13 +217,16 @@ let db_timer = new Date();
 
 
 
-            return res.status(204).send({
+            res.status(204).send({
                 message: "Question Deleted Successfully!!"
             });
+            Metrics.timing('questions.DELETE.deleteQuestion',timer);
         } else {
+            Metrics.timing('questions.DELETE.deleteQuestion',timer);
             return res.status(404).send({
                 msg: "Question cannot be Deleted!!"
             });
+            
         }
     })
         .catch(err => {
@@ -235,7 +242,7 @@ let db_timer = new Date();
 
 exports.createQuestion = async (req, res) => {
 
-Metrics.increment("questions.POST.createQuestion");
+Metrics.increment('questions.POST.createQuestion');
 let timer = new Date();
 let db_timer = new Date(); 
 
@@ -317,7 +324,9 @@ let db_timer = new Date();
     }).catch((err) => {
         console.log("Error while updating or fethcing the questions: ", err);
     });
-    return res.send(ques[0]);
+    Metrics.timing('questions.POST.dbcreateQuestion',db_timer);
+    res.send(ques[0]);
+    Metrics.timing('questions.POST.createQuestion',timer);
 
 
 };
@@ -328,9 +337,9 @@ let db_timer = new Date();
 // fixed in a5 branch
 exports.updateQuestion_new = async (req, res) => {
 
-Metrics.increment("questions.PUT.updateQuestion_new");
+Metrics.increment('questions.PUT.updateQuestion_new');
 let timer = new Date();
-let db_timer = new Date(); 
+
 
     console.log("text----" + req.body.question_text)
     var question_text = req.body.question_text;
@@ -362,6 +371,7 @@ let db_timer = new Date();
             questId: req.params.question_id
         }
     })
+    let db_timer = new Date(); 
     const question_t = await questions.findByPk(req.params.question_id)
 
     if (ques_categories) {
@@ -417,7 +427,9 @@ let db_timer = new Date();
         console.log(" Error while updating or fethcing the questions: ", err);
         return res.status(400).send(err)
     });
-    return res.send(ques[0]);
+    Metrics.timing('questions.PUT.dbupdateQuestion_new',db_timer);
+    res.send(ques[0]);
+    Metrics.timing('questions.PUT.updateQuestion_new',timer);
 
 
 };

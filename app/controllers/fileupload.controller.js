@@ -21,9 +21,9 @@ Metrics = new SDC({port: 8125});
 //Attach a File to Question
 exports.attachFileWithQuestion = async (req, res) => {
 
-    metrics.increment("images.POST.attachFileWithQuestion");
+    Metrics.increment('images.POST.attachFileWithQuestion');
     let timer = new Date();
-let db_timer = new Date(); 
+
     const s3Client = s3.s3Client;
     const params = s3.uploadParams;
     params.Body = req.file.buffer;
@@ -33,6 +33,7 @@ let db_timer = new Date();
     if(!req.file.originalname.match(/\.(jpg|jpeg|png)$/i)) {
         return res.status(400).send("Only jpg, jpeg,pg format allowed !");
     }
+    let db_timer = new Date(); 
 
     const file_object = await images.create({
         image_id: imageID,
@@ -45,6 +46,7 @@ let db_timer = new Date();
     })
    /*  file_object.aws_s3_object_name = file_object.file_id + req.params.question_id + req.file.originalname */
     params.Key = file_object.aws_s3_object_name
+    let s3_timer = new Date();
     s3Client.upload(params, (err) => {
         if (err) {
             res.status(500).json({ error: "Error -> " + err });
@@ -54,12 +56,16 @@ let db_timer = new Date();
                 image_id: file_object.image_id,
             }
         }).then(file => {
-            return res.status(201).send({
+            Metrics.timing('images.POST.s3attachFileWithQuestion',s3_timer);
+            Metrics.timing('images.POST.dbattachFileWithQuestion',db_timer);
+            
+            res.status(201).send({
                 file_id: file.image_id,
                 aws_s3_object_name: file.aws_s3_object_name,
                 file_name: file.image_name,
                 created_date: file.createdAt
             });
+            Metrics.timing('images.POST.attachFileWithQuestion',timer);
         });
     });
 }
@@ -68,9 +74,9 @@ let db_timer = new Date();
 //Attach a File to Answer
 exports.attachFileWithAnswer = async (req, res) => {
 
-    metrics.increment("images.POST.attachFileWithAnswer");
+    Metrics.increment('images.POST.attachFileWithAnswer');
     let timer = new Date();
-let db_timer = new Date(); 
+    let db_timer = new Date(); 
     const s3Client = s3.s3Client;
     const params = s3.uploadParams;
     params.Body = req.file.buffer;
@@ -93,24 +99,28 @@ let db_timer = new Date();
 
     params.Key = file_object.aws_s3_object_name
 
-
+    let s3_timer = new Date();
     await s3Client.upload(params, (err) => {
         if (err) {
             return res.status(500).json({ error: "S3 bucket Error -> " + err });
         }
     });
+    
     //res.json({ message: 'File uploaded successfully!!!' + JSON.stringify(data) + data.Key });
     const file_obj = await images.findOne({
         where: {
             image_id: imageID,
         }
     })
+    Metrics.timing('images.POST.s3attachFileWithAnswer',s3_timer);
+    Metrics.timing('images.POST.dbattachFileWithQuestion',db_timer);
     res.status(201).send({
         file_id: file_obj.image_id,
         s3_object_name: file_obj.aws_s3_object_name,
         file_name: file_obj.image_name,
         created_date: file_obj.createdAt
     });
+    Metrics.timing('images.POST.attachFileWithQuestion',timer);
 
 
 }
@@ -119,9 +129,9 @@ let db_timer = new Date();
 //Delete a file from Question
 exports.deleteFileFromQuestion = async (req, res) => {
 
-    metrics.increment("images.DELETE.deleteFileFromQuestion");
+    Metrics.increment('images.DELETE.deleteFileFromQuestion');
     let timer = new Date();
-let db_timer = new Date(); 
+    let db_timer = new Date(); 
 
     images.findByPk(req.params.file_id).then((file) => {
         console.log("aws object name "+"========="+file.aws_s3_object_name)
@@ -133,18 +143,23 @@ let db_timer = new Date();
             */
         };
         console.log("PARAMS:", params)
+        let s3_timer = new Date();
 
         s3Client.deleteObject(params, function (err, file) {
             if (err) console.log(err, err.stack); // an error occurred
             else
                 res.json({ message: 'image deleted successfully!!!' }) // successful response
         });
+        Metrics.timing('images.DELETE.s3deleteFileFromQuestion',s3_timer);
 
         images.destroy({
             where: {
                 image_id: req.params.file_id,
             }
         })
+        Metrics.timing('images.DELETE.dbdeleteFileFromQuestion',db_timer);
+        Metrics.timing('images.DELETE.deleteFileFromQuestion',timer);
+        
         
     })
 }
@@ -167,15 +182,20 @@ let db_timer = new Date();
             */
         };
         console.log("PARAMS:", params)
+        let s3_timer = new Date();
         s3Client.deleteObject(params, function (err, data) {
             if (err) console.log(err, err.stack); // an error occurred
             else
                 res.json({ message: 'image deleted successfully!!!' }) // successful response
         });
+        Metrics.timing('images.DELETE.s3deleteFileFromAnswer',s3_timer);
         images.destroy({
             where: {
                 image_id: req.params.file_id,
             }
         })
+        Metrics.timing('images.DELETE.dbdeleteFileFromAnswer',db_timer);
+        Metrics.timing('images.DELETE.deleteFileFromAnswer',timer);
+
     })
 }
