@@ -28,7 +28,7 @@ Metrics = new SDC({port: 8125});
 
 
 exports.createAnswer = (req, res,) => {
-    Metrics.increment("answers.POST.createAnswer");
+    Metrics.increment('answers.POST.createAnswer');
     let timer = new Date();
     let db_timer = new Date(); 
 
@@ -58,6 +58,7 @@ exports.createAnswer = (req, res,) => {
         questionQuestId: req.params.questId,
         user_id: req.user.userId
     }).then((answer) => {
+        Metrics.timing('answers.POST.dbcreateAnswer',db_timer);
 
         if (!answer) {
 
@@ -66,6 +67,7 @@ exports.createAnswer = (req, res,) => {
             });
 
         }
+        Metrics.timing('answers.POST.createAnswer',timer);
         return res.status(201).send({
             answer: answer
         })
@@ -100,6 +102,7 @@ exports.getAnswerByIdQuestionById = async(req, res) => {
                     
         }]
     }).then((answer) => {
+        Metrics.timing('answers.GET.dbgetAnswerByIdQuestionById',db_timer);
         if (!answer) {
 
             return res.status(400).send({
@@ -119,6 +122,7 @@ exports.getAnswerByIdQuestionById = async(req, res) => {
                 }
             })
         }
+        Metrics.timing('answers.GET.getAnswerByIdQuestionById',timer);
         return res.status(200).send(
 
             answer
@@ -165,6 +169,7 @@ exports.deleteAnswer = async (req, res) => {
             Key: file.aws_s3_object_name
 
         }
+        let s3_timer = new Date();
 
         s3Client.deleteObject(params, function (err) {
             if (err) console.log(err, err.stack); // an error occurred
@@ -172,6 +177,7 @@ exports.deleteAnswer = async (req, res) => {
             /* else
                 res.json({ message: 'image deleted successfully!!!' }) // successful response */
         });
+        Metrics.timing('answers.DELETE.s3_file_deleteAnswer',s3_timer)
 
     }
     /*
@@ -180,6 +186,8 @@ exports.deleteAnswer = async (req, res) => {
 
      
     */
+
+   Metrics.timing('answers.DELETE.dbdeleteAnswer',db_timer);
     answers.destroy({
         where: {
             ansId: req.params.answer_id
@@ -187,11 +195,14 @@ exports.deleteAnswer = async (req, res) => {
     }).then((answer) => {
         if (!answer) {
 
+            Metrics.timing('answers.DELETE.getAnswerByIdQuestionById',timer);
+
             return res.status(400).send({
                 message: "answer Not found."
             });
 
         } else {
+            Metrics.timing('answers.DELETE.getAnswerByIdQuestionById',timer);
             return res.status(200).send({
                 message: "Answer Deleted"
             })
@@ -209,7 +220,7 @@ exports.deleteAnswer = async (req, res) => {
 
 // 5. authenticated api Update Answer of a question
 exports.updateAnswer = (req, res) => {
-    Metrics.increment("answers.PUT.updateAnswer");
+    Metrics.increment('answers.PUT.updateAnswer');
     let timer = new Date();
     let db_timer = new Date(); 
 
@@ -233,6 +244,7 @@ exports.updateAnswer = (req, res) => {
                     message: "answer cannot be updated"
                 });
             } else {
+                Metrics.timing('answers.PUT.dbupdateAnswer',db_timer);
                 res.status(201).send({
                     answer_id: req.params.answer_id,
                     question_id: req.params.question_id,
@@ -243,6 +255,7 @@ exports.updateAnswer = (req, res) => {
                 });
             }
         })
+        Metrics.timing('answers.PUT.updateAnswer',timer);
 
     })
         .catch(err => {

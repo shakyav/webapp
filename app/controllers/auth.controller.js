@@ -18,7 +18,7 @@ var bcrypt = require("bcryptjs");
 // 1 . public api create user
 exports.sign_Up = (req, res) => {
 
-Metrics.increment("User.POST.sign_Up");
+Metrics.increment('User.POST.sign_Up');
 let timer = new Date();
 let db_timer = new Date(); 
   console.log("create user")
@@ -31,9 +31,9 @@ let db_timer = new Date();
 
 
     }).then(user => {
-      Metrics.timing("User.POST.dbsign_Up",db_timer)
+      Metrics.timing('User.POST.dbsign_Up',db_timer)
 
-      return res.status(201).send({
+       res.status(201).send({
         userId: user.userId,
         first_name: user.first_name,
         last_name: user.last_name,
@@ -41,7 +41,9 @@ let db_timer = new Date();
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
       });
-    }, Metrics.timing("User.POST.sign_Up",timer))
+      Metrics.timing('User.POST.sign_Up',timer)
+      
+    })
     .catch(err => {
 
 
@@ -54,7 +56,7 @@ let db_timer = new Date();
 //1 . authenticated api update user
 exports.update_Record = (req, res) => {
 
-  Metrics.increment("User.PUT.update_Record");
+  Metrics.increment('User.PUT.update_Record');
   let timer = new Date();
   let db_timer = new Date();
   // Save User to Database
@@ -72,13 +74,14 @@ exports.update_Record = (req, res) => {
           email_address: req.body.email_address
         }
       }).then(user => {
-        Metrics.timing("User.PUT.dbupdate_Record",db_timer)
+        Metrics.timing('User.PUT.dbupdate_Record',db_timer)
         return res.status(201).send({
           first_name: user.first_name,
           last_name: user.last_name,
           email_address: user.email_address,
         });
-      },Metrics.timing("User.PUT.update_Record",timer))
+      })
+      Metrics.timing('User.PUT.update_Record',timer)
     })
 
     .catch(err => {
@@ -91,7 +94,7 @@ exports.update_Record = (req, res) => {
 // 2 . authenticated api sign in user
 exports.sign_In = (req, res) => {
 
-  Metrics.increment("User.GET.sign_In");
+  Metrics.increment('User.GET.sign_In');
   let timer = new Date();
   let db_timer = new Date(); 
   console.log("sign in user")
@@ -101,20 +104,20 @@ exports.sign_In = (req, res) => {
       }
     })
     .then(user => {
-      Metrics.timing("User.POST.dbsign_In",db_timer)
+      Metrics.timing('User.GET.dbsign_In',db_timer)
       if (!user) {
         return res.status(404).send({
           message: "User Not found."
         });
       }
 
-      return res.status(200).send({
+      res.status(200).send({
         userId: user.userId,
         first_name: user.first_name,
         last_name: user.last_name,
         email_address: user.email_address,
       });
-      Metrics.timing("User.POST.sign_In",timer)
+      Metrics.timing('User.GET.sign_In',timer)
 
     })
     .catch(err => {
@@ -128,27 +131,30 @@ exports.sign_In = (req, res) => {
 
 exports.getUserById = (req, res) => {
 
-Metrics.increment("User.GET.getUserById");
+Metrics.increment('User.GET.getUserById');
 
 let timer = new Date();
 let db_timer = new Date(); 
 
   User.findByPk(req.params.user_id)
     .then(user => {
-      Metrics.timing("User.GET.dbgetUserById",db_timer)
+      /* Metrics.timing('User.GET.dbgetUserById',db_timer) */
       if (!user) {
         return res.status(404).send({
           message: "User Not found."
         });
       }
-      return res.status(200).send({
+      Metrics.timing('User.GET.dbgetUserById',db_timer)
+      res.status(200).send({
         id: user.user_id,
         first_name: user.first_name,
         last_name: user.last_name,
         email_address: user.email_address,
         created_at: user.createdAt,
         udated_at: user.updatedAt
-      },Metrics.timing("User.GET.getUserById",timer));
+      });
+      Metrics.timing('User.GET.getUserById',timer)
+      
     })
     .catch(err => {
       return res.status(400).send({

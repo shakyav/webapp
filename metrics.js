@@ -15,17 +15,17 @@ metrics.increment("questions.GET.getQuestionById");
 metrics.increment("questions.DELETE.deleteQuestion");
 
       //Counter for Answer API 
-metrics.increment("Answer.POST.createAnswer");
-metrics.increment("Answer.PUT.updateAnswer");
-metrics.increment("Answer.GET.getAnswerByIdQuestionById");
-metrics.increment("Answer.DELETE.deleteAnswer");
+metrics.increment("answers.POST.createAnswer");
+metrics.increment("answers.PUT.updateAnswer");
+metrics.increment("answers.GET.getAnswerByIdQuestionById");
+metrics.increment("answers.DELETE.deleteAnswer");
 
      //Counter for File API 
-metrics.increment("Images.POST.attachFileWithQuestion");
-metrics.increment("Images.POST.attachFileWithAnswer");
+metrics.increment("images.POST.attachFileWithQuestion");
+metrics.increment("images.POST.attachFileWithAnswer");
    
-metrics.increment("Images.DELETE.deleteFileFromQuestion");
-metrics.increment("Images.DELETE.deleteFileFromAnswer");
+metrics.increment("images.DELETE.deleteFileFromQuestion");
+metrics.increment("images.DELETE.deleteFileFromAnswer");
 
 
 // ================ timer =================
@@ -42,23 +42,40 @@ metrics.timing("User.GET.dbsign_In");
 metrics.timing("User.GET.dbgetUserById");
 
       //Counter for Question API 
-metrics.timing("Question.POST.createQuestion");
-metrics.timing("Question.PUT.updateQuestion_new");
-metrics.timing("Question.GET.getAllQuestions");
-metrics.timing("Question.GET.getQuestionById");
-metrics.timing("Question.DELETE.deleteQuestion");
+metrics.timing("questions.POST.createQuestion");
+metrics.timing("questions.PUT.updateQuestion_new");
+metrics.timing("questions.GET.getAllQuestions");
+metrics.timing("questions.GET.getQuestionById");
+metrics.timing("questions.DELETE.deleteQuestion");
+
+metrics.timing("questions.POST.dbcreateQuestion");
+metrics.timing("questions.PUT.dbupdateQuestion_new");
+metrics.timing("questions.GET.dbgetAllQuestions");
+metrics.timing("questions.GET.dbgetQuestionById");
+metrics.timing("questions.DELETE.dbdeleteQuestion");
 
       //Counter for Answer API 
-metrics.timing("Answer.POST.createAnswer");
-metrics.timing("Answer.PUT.updateAnswer");
-metrics.timing("Answer.GET.getAnswerByIdQuestionById");
-metrics.timing("Answer.DELETE.deleteAnswer");
+metrics.timing("answers.POST.createAnswer");
+metrics.timing("answers.PUT.updateAnswer");
+metrics.timing("answers.GET.getAnswerByIdQuestionById");
+metrics.timing("answers.DELETE.deleteAnswer");
+
+metrics.timing("answers.POST.dbcreateAnswer");
+metrics.timing("answers.PUT.dbupdateAnswer");
+metrics.timing("answers.GET.dbgetAnswerByIdQuestionById");
+metrics.timing("answers.DELETE.dbdeleteAnswer");
 
      //Counter for File API 
-metrics.timing("Images.POST.attachFileWithQuestion");
-metrics.timing("Images.POST.attachFileWithAnswer");
+metrics.timing("images.POST.attachFileWithQuestion");
+metrics.timing("images.POST.attachFileWithAnswer");
    
-metrics.timing("Images.DELETE.deleteFileFromQuestion");
-metrics.timing("Images.DELETE.deleteFileFromAnswer");
+metrics.timing("images.DELETE.deleteFileFromQuestion");
+metrics.timing("images.DELETE.deleteFileFromAnswer");
+
+metrics.timing("images.POST.dbattachFileWithQuestion");
+metrics.timing("images.POST.dbattachFileWithAnswer");
+   
+metrics.timing("images.DELETE.dbdeleteFileFromQuestion");
+metrics.timing("images.DELETE.dbdeleteFileFromAnswer");
 
             
