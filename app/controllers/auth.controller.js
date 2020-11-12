@@ -1,8 +1,8 @@
 const db = require("../models");
 const config = require("../appConfig/auth.config");
-/* const Metrics = require("../../metrics"); */
-var SDC = require('statsd-client');
-Metrics = new SDC({port: 8125});
+const Metrics = require("../../metrics");
+/* var SDC = require('statsd-client');
+Metrics = new SDC({port: 8125}); */
 const User = db.user;
 const questions = db.questions;
 const answers = db.answers;
@@ -31,6 +31,7 @@ let db_timer = new Date();
 
 
     }).then(user => {
+      Metrics.timing("User.POST.dbsign_Up",db_timer)
 
       return res.status(201).send({
         userId: user.userId,
@@ -40,7 +41,7 @@ let db_timer = new Date();
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
       });
-    })
+    }, Metrics.timing("User.POST.sign_Up",timer))
     .catch(err => {
 
 
@@ -54,6 +55,8 @@ let db_timer = new Date();
 exports.update_Record = (req, res) => {
 
   Metrics.increment("User.PUT.update_Record");
+  let timer = new Date();
+  let db_timer = new Date();
   // Save User to Database
   User.update({
       first_name: req.body.first_name,
@@ -69,12 +72,13 @@ exports.update_Record = (req, res) => {
           email_address: req.body.email_address
         }
       }).then(user => {
+        Metrics.timing("User.PUT.dbupdate_Record",db_timer)
         return res.status(201).send({
           first_name: user.first_name,
           last_name: user.last_name,
           email_address: user.email_address,
         });
-      })
+      },Metrics.timing("User.PUT.update_Record",timer))
     })
 
     .catch(err => {
@@ -88,6 +92,8 @@ exports.update_Record = (req, res) => {
 exports.sign_In = (req, res) => {
 
   Metrics.increment("User.GET.sign_In");
+  let timer = new Date();
+  let db_timer = new Date(); 
   console.log("sign in user")
   User.findOne({
       where: {
@@ -95,6 +101,7 @@ exports.sign_In = (req, res) => {
       }
     })
     .then(user => {
+      Metrics.timing("User.POST.dbsign_In",db_timer)
       if (!user) {
         return res.status(404).send({
           message: "User Not found."
@@ -106,7 +113,7 @@ exports.sign_In = (req, res) => {
         first_name: user.first_name,
         last_name: user.last_name,
         email_address: user.email_address,
-      });
+      },Metrics.timing("User.POST.sign_In",timer));
 
     })
     .catch(err => {
@@ -122,8 +129,12 @@ exports.getUserById = (req, res) => {
 
 Metrics.increment("User.GET.getUserById");
 
+let timer = new Date();
+let db_timer = new Date(); 
+
   User.findByPk(req.params.user_id)
     .then(user => {
+      Metrics.timing("User.GET.dbgetUserById",db_timer)
       if (!user) {
         return res.status(404).send({
           message: "User Not found."
@@ -136,7 +147,7 @@ Metrics.increment("User.GET.getUserById");
         email_address: user.email_address,
         created_at: user.createdAt,
         udated_at: user.updatedAt
-      });
+      },Metrics.timing("User.GET.getUserById",timer));
     })
     .catch(err => {
       return res.status(400).send({

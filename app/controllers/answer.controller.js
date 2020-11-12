@@ -28,7 +28,9 @@ Metrics = new SDC({port: 8125});
 
 
 exports.createAnswer = (req, res,) => {
-    metrics.increment("Answer.POST.createAnswer");
+    Metrics.increment("Answer.POST.createAnswer");
+    let timer = new Date();
+    let db_timer = new Date(); 
 
     /* 
     checks if answer text is empty then returns a custom message 
@@ -76,7 +78,9 @@ exports.createAnswer = (req, res,) => {
 
 exports.getAnswerByIdQuestionById = async(req, res) => {
 
-    metrics.increment("Answer.GET.getAnswerByIdQuestionById");
+    Metrics.increment("Answer.GET.getAnswerByIdQuestionById");
+    let timer = new Date();
+    let db_timer = new Date(); 
     
 
     /*
@@ -133,7 +137,9 @@ exports.getAnswerByIdQuestionById = async(req, res) => {
 exports.deleteAnswer = async (req, res) => {
 
 
-    metrics.increment("Answer.DELETE.deleteAnswer");
+    Metrics.increment("Answer.DELETE.deleteAnswer");
+    let timer = new Date();
+    let db_timer = new Date(); 
     
 
     const image_file = await images.findAll({
@@ -203,7 +209,9 @@ exports.deleteAnswer = async (req, res) => {
 
 // 5. authenticated api Update Answer of a question
 exports.updateAnswer = (req, res) => {
-    metrics.increment("Answer.PUT.updateAnswer");
+    Metrics.increment("Answer.PUT.updateAnswer");
+    let timer = new Date();
+    let db_timer = new Date(); 
 
 
     answers.update({

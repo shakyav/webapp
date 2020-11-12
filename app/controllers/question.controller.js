@@ -6,8 +6,9 @@
 
 const db = require("../models");
 const config = require("../appConfig/auth.config");
-var SDC = require('statsd-client');
-Metrics = new SDC({port: 8125});
+const Metrics = require("../../metrics");
+/* var SDC = require('statsd-client');
+Metrics = new SDC({port: 8125}); */
 const User = db.user;
 const questions = db.questions;
 const answers = db.answers;
@@ -28,6 +29,8 @@ const env = require('../appConfig/s3.env.js');
 exports.getAllQuestions = (req, res) => {
 
 Metrics.increment("questions.GET.getAllQuestions");
+let timer = new Date();
+let db_timer = new Date(); 
 
     console.log("i am here")
     questions.findAll({
@@ -57,6 +60,7 @@ Metrics.increment("questions.GET.getAllQuestions");
         ]
 
     }).then((question) => {
+        Metrics.timing("User.GET.getAllQuestions",db_timer)
         if (!question) {
 
             return res.status(404).send({
@@ -71,7 +75,7 @@ Metrics.increment("questions.GET.getAllQuestions");
             question
         )
 
-    }).catch(err => {
+    },Metrics.timing("User.GET.getAllQuestions",timer)).catch(err => {
        err
     })
 };
@@ -82,6 +86,8 @@ Metrics.increment("questions.GET.getAllQuestions");
 exports.getQuestionById = (req, res) => {
 
 Metrics.increment("questions.GET.getQuestionById");
+let timer = new Date();
+let db_timer = new Date(); 
 
     console.log("i am here")
     questions.findByPk(req.params.question_id, {
@@ -112,6 +118,7 @@ Metrics.increment("questions.GET.getQuestionById");
         ]
 
     }).then((question) => {
+        Metrics.timing("User.GET.getQuestionById",db_timer)
 
         if (!question) {
 
@@ -127,7 +134,7 @@ Metrics.increment("questions.GET.getQuestionById");
             question
         )
 
-    }).catch(err => {
+    },Metrics.timing("User.GET.getQuestionById",timer)).catch(err => {
         err
     })
 };
@@ -138,6 +145,8 @@ Metrics.increment("questions.GET.getQuestionById");
 
 exports.deleteQuestion = async(req, res) => {
 Metrics.increment("questions.DELETE.deleteQuestion");
+let timer = new Date();
+let db_timer = new Date(); 
 
 
     const ans = await answers.findOne({
@@ -227,6 +236,8 @@ Metrics.increment("questions.DELETE.deleteQuestion");
 exports.createQuestion = async (req, res) => {
 
 Metrics.increment("questions.POST.createQuestion");
+let timer = new Date();
+let db_timer = new Date(); 
 
     /* This function recieves the question text and question categories in the request body
     first it checks if the question_text is not empty if is the it returns a massage with status 400
@@ -318,6 +329,8 @@ Metrics.increment("questions.POST.createQuestion");
 exports.updateQuestion_new = async (req, res) => {
 
 Metrics.increment("questions.PUT.updateQuestion_new");
+let timer = new Date();
+let db_timer = new Date(); 
 
     console.log("text----" + req.body.question_text)
     var question_text = req.body.question_text;
