@@ -15,7 +15,7 @@ const images = db.images
 
 const Op = db.Sequelize.Op;
 const Sequelize = require("sequelize");
-const metrics = require("../metrics");
+const metrics = require("../../metrics");
 
 const { s3Client } = require("../appConfig/s3.config");
 const env = require('../appConfig/s3.env.js');
