@@ -16,7 +16,7 @@ const Op = db.Sequelize.Op;
 const Sequelize = require("sequelize");
 
 var bcrypt = require("bcryptjs");
-var log4js = require("../logger")
+/* var log4js = require("../logger") */
 const logger = log4js.getLogger('logs');
 
 

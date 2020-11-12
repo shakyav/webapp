@@ -13,7 +13,7 @@ const answers = db.answers;
 const categories = db.categories;
 const quest_cat = db.question_categories;
 const images = db.images
-var log4js = require("../logger")
+/* var log4js = require("../logger") */
 const logger = log4js.getLogger('logs');
 
 const Op = db.Sequelize.Op;
