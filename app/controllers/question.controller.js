@@ -65,6 +65,7 @@ let db_timer = new Date();
     }).then((question) => {
         Metrics.timing('questions.GET.dbgetAllQuestions',db_timer)
         if (!question) {
+            logger.error('No questions in created.')
 
             return res.status(404).send({
                 message: "No questions in created."
@@ -126,6 +127,7 @@ let db_timer = new Date();
         Metrics.timing('questions.GET.dbgetQuestionById',db_timer)
 
         if (!question) {
+            logger.error('question not found')
 
             return res.status(404).send({
                 message: "question Not found."
@@ -262,6 +264,7 @@ let db_timer = new Date();
 
 
     if (!question_text) {
+        logger.error('question text field is empty')
         return res.status(400).send({
             Message: "please provide a question_text !"
         });
@@ -353,6 +356,7 @@ let timer = new Date();
     var ques_categories = req.body.categories;
 
     if (!question_text) {
+        logger.error('question not found')
         return res.status(400).send({
             Message: "please provide a question_text !"
         });
