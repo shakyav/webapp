@@ -17,6 +17,8 @@ const env = require('../appConfig/s3.env.js');
 /* const logger = log4js.getLogger('logs'); */
 var SDC = require('statsd-client');
 Metrics = new SDC({port: 8125});
+const log = require("../../logs")
+const logger = log.getLogger('logs');
 
 //Attach a File to Question
 exports.attachFileWithQuestion = async (req, res) => {
