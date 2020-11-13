@@ -33,7 +33,7 @@ exports.createAnswer = (req, res,) => {
     Metrics.increment('answers.POST.createAnswer');
     logger.info("create answer");
     let timer = new Date();
-    let db_timer = new Date(); 
+    
 
     /* 
     checks if answer text is empty then returns a custom message 
@@ -57,6 +57,7 @@ exports.createAnswer = (req, res,) => {
 
     }
     /* inserts the  answer object in the answers table and returns the create object as the response */
+    let db_timer = new Date(); 
     answers.create({
         answer_Text: req.body.answer_Text,
         question_id: req.params.questId,
