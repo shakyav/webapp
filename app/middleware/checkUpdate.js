@@ -1,5 +1,7 @@
 const db = require("../models");
 const User = db.user;
+const log = require("../../logs")
+const logger = log.getLogger('logs');
 
 checkEmailUpdate = (req, res, next) => {
     User.findOne({

@@ -6,6 +6,8 @@ const categories = db.categories;
 
 const Op = db.Sequelize.Op;
 const Sequelize = require("sequelize");
+const log = require("../../logs")
+const logger = log.getLogger('logs');
 
 
 // check user authorization for delete question

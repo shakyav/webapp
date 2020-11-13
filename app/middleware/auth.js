@@ -1,6 +1,8 @@
 const { user } = require("../models");
 const db = require("../models");
 var bcrypt = require("bcryptjs");
+const log = require("../../logs")
+const logger = log.getLogger('logs');
 
 const User = db.user;
 
@@ -26,6 +28,7 @@ BasicAuthToken = (req, res, next) => {
     })
         .then(user => {
             if (!user) {
+                logger.error("Invalid user credentials");
                 return res.status(401).json({ message: 'Invalid Authentication Credentials' });
             }
             var passwordIsValid = bcrypt.compareSync(
@@ -34,6 +37,7 @@ BasicAuthToken = (req, res, next) => {
             );
 
             if (!passwordIsValid) {
+                logger.error("Invalid Password");
                 return res.status(401).send({
                     message: "Invalid Password!"
                 });
