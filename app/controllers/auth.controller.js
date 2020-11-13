@@ -111,7 +111,9 @@ exports.sign_In = (req, res) => {
     .then(user => {
       Metrics.timing('User.GET.dbsign_In',db_timer)
       if (!user) {
+        logger.error('User Not found.')
         return res.status(404).send({
+          
           message: "User Not found."
         });
       }
@@ -147,6 +149,7 @@ let db_timer = new Date();
     .then(user => {
       /* Metrics.timing('User.GET.dbgetUserById',db_timer) */
       if (!user) {
+        logger.error('User Not found.')
         return res.status(404).send({
           message: "User Not found."
         });

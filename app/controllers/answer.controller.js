@@ -39,6 +39,7 @@ exports.createAnswer = (req, res,) => {
     checks if answer text is empty then returns a custom message 
      */
     if (!req.body.answer_Text) {
+        logger.error('answer text empty')
         return res.status(400).send({
             "message": "Answer Text cannot be empty"
         })
@@ -49,6 +50,7 @@ exports.createAnswer = (req, res,) => {
     else {
         questions.findByPk(req.params.questId).then((quest) => {
             if (!quest) {
+                logger.error('question not found')
                 return res.status(400).send({ message: "question not found" })
             }
         })
@@ -65,6 +67,7 @@ exports.createAnswer = (req, res,) => {
 
         if (!answer) {
 
+            logger.error('answer not found')
             return res.status(404).send({
                 message: "Answer not created"
             });
@@ -110,6 +113,7 @@ exports.getAnswerByIdQuestionById = async(req, res) => {
         Metrics.timing('answers.GET.dbgetAnswerByIdQuestionById',db_timer);
         if (!answer) {
 
+            logger.error('answer not found')
             return res.status(400).send({
                 message: "answer Not found."
             });
@@ -121,6 +125,7 @@ exports.getAnswerByIdQuestionById = async(req, res) => {
 
             }).then((quest) => {
                 if (!quest) {
+                    logger.error('question not found')
                     return res.status(400).send({
                         message: "question not found"
                     })
@@ -201,6 +206,7 @@ exports.deleteAnswer = async (req, res) => {
         }
     }).then((answer) => {
         if (!answer) {
+            logger.error('answer not found')
 
             Metrics.timing('answers.DELETE.getAnswerByIdQuestionById',timer);
 
@@ -249,6 +255,7 @@ exports.updateAnswer = (req, res) => {
             }
         }).then(answer => {
             if (!answer) {
+                logger.error('answer cannot be updated')
                 return res.status(404).send({
                     message: "answer cannot be updated"
                 });

@@ -87,6 +87,7 @@ exports.attachFileWithAnswer = async (req, res) => {
     var imageID = uuidv4();
 
     if(!req.file.originalname.match(/\.(jpg|jpeg|png)$/i)) {
+        logger.error('Only jpg, jpeg,pg format allowed !')
         return res.status(400).send("Only jpg, jpeg,pg format allowed !");
     }
     const file_object = await images.create({
@@ -106,6 +107,7 @@ exports.attachFileWithAnswer = async (req, res) => {
     let s3_timer = new Date();
     await s3Client.upload(params, (err) => {
         if (err) {
+            logger.error('S3 bucket error')
             return res.status(500).json({ error: "S3 bucket Error -> " + err });
         }
     });
