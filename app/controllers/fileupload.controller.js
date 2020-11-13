@@ -117,14 +117,14 @@ exports.attachFileWithAnswer = async (req, res) => {
         }
     })
     Metrics.timing('images.POST.s3attachFileWithAnswer',s3_timer);
-    Metrics.timing('images.POST.dbattachFileWithQuestion',db_timer);
+    Metrics.timing('images.POST.dbattachFileWithAnswer',db_timer);
     res.status(201).send({
         file_id: file_obj.image_id,
         s3_object_name: file_obj.aws_s3_object_name,
         file_name: file_obj.image_name,
         created_date: file_obj.createdAt
     });
-    Metrics.timing('images.POST.attachFileWithQuestion',timer);
+    Metrics.timing('images.POST.attachFileWithAnswer',timer);
 
 
 }
