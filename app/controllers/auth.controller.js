@@ -23,8 +23,9 @@ exports.sign_Up = (req, res) => {
 Metrics.increment('User.POST.sign_Up');
 logger.info("User Signup");
 let timer = new Date();
-let db_timer = new Date(); 
+
   console.log("create user")
+  let db_timer = new Date(); 
   User.create({
 
       first_name: req.body.first_name,
@@ -101,8 +102,9 @@ exports.sign_In = (req, res) => {
   Metrics.increment('User.GET.sign_In');
   logger.info("User Sign In");
   let timer = new Date();
+  
+  console.log("sign in user");
   let db_timer = new Date(); 
-  console.log("sign in user")
   User.findOne({
       where: {
         email_address: req.user.email_address

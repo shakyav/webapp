@@ -80,7 +80,7 @@ exports.attachFileWithAnswer = async (req, res) => {
     Metrics.increment('images.POST.attachFileWithAnswer');
     logger.info("attach image to an answer");
     let timer = new Date();
-    let db_timer = new Date(); 
+    
     const s3Client = s3.s3Client;
     const params = s3.uploadParams;
     params.Body = req.file.buffer;
@@ -90,6 +90,7 @@ exports.attachFileWithAnswer = async (req, res) => {
         logger.error('Only jpg, jpeg,pg format allowed !')
         return res.status(400).send("Only jpg, jpeg,pg format allowed !");
     }
+    let db_timer = new Date(); 
     const file_object = await images.create({
         image_id: imageID,
         image_name: req.file.originalname,
