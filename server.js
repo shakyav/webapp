@@ -1,7 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const log = require("./logs")
+const logger = log.getLogger('logs');
 /* const fileupload = require("./app/controllers/fileupload.controller") */
 
 const app = express();
@@ -41,6 +42,7 @@ app.get("/", (req, res) => {
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
+  logger.info("Application running");
   console.log(`Server is running on port ${PORT}.`);
   
 });
