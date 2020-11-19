@@ -37,7 +37,7 @@ require('./app/routes/auth.routes')(app);
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to webapp" });
+  res.json({ message: "Welcome to Webapp" });
 });
 
 // set port, listen for requests
