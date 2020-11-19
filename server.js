@@ -11,6 +11,7 @@ var corsOptions = {
   origin: "http://localhost:8081"
 };
 
+logger.info("Application running");
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
@@ -42,7 +43,7 @@ app.get("/", (req, res) => {
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  logger.info("Application running");
+  
   console.log(`Server is running on port ${PORT}.`);
   
 });
