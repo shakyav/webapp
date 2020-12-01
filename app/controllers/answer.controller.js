@@ -23,6 +23,7 @@ var SDC = require('statsd-client');
 Metrics = new SDC({port: 8125});
 const log = require("../../logs")
 const logger = log.getLogger('logs');
+var AWS = require('aws-sdk');
 /* const metrics = require("../../metrics"); */
 /* var log4js = require("../logger") */
 /* const logger = log4js.getLogger('logs'); */
@@ -74,6 +75,54 @@ exports.createAnswer = (req, res,) => {
             });
 
         }
+
+        logger.info(answer);
+        logger.info(req.params.questId);
+
+        questions.findOne({where:{
+            questId: req.params.questId,
+        }}).then((questn)=>{
+            logger.info(questn);
+            logger.info(questn.user_id);
+            
+            User.findOne({
+                where:{
+                    userId: questn.user_id
+                }
+            }).then((usr)=>{
+                logger.info(usr);
+                logger.info(usr.email_address);
+                AWS.config.update({
+                    region: "us-east-1"
+                });
+                // Create publish parameters
+                var params = {
+                    MessageStructure: 'json',
+                    Message: JSON.stringify({
+                        "default": JSON.stringify({
+                            "question_id":req.params.questId,
+                            "answer_id": answer.ansId,
+                            "answer_text": answer.answer_Text,
+                            "email": usr.email_address
+                        }),
+                    }), /* required */
+                  TopicArn: 'arn:aws:sns:us-east-1:485961135038:email_request'
+                };     
+                var publishTextPromise = new AWS.SNS({apiVersion: '2010-03-31'}).publish(params).promise();
+                    // Handle promise's fulfilled/rejected states
+                    publishTextPromise.then(
+                      function(data) {
+                        console.log(`Message ${params.Message} sent to the topic ${params.TopicArn}`);
+                        console.log("MessageID is " + data.MessageId);
+                        return res.send("Success")
+                      }).catch(
+                        function(err) {
+                        console.error(err, err.stack);
+                        logger.info("inside then"+err.stack);
+                        return err
+                  });           
+            })
+        })
         
         res.status(201).send({
             answer: answer
