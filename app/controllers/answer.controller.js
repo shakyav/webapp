@@ -121,7 +121,7 @@ exports.createAnswer = (req, res, ) => {
                         }),
                     }),
                     /* required */
-                    TopicArn: process.env.SNS_TOPIC
+                    TopicArn: process.env.SNS_TOPIC_ARN
                 };
                 var publishTextPromise = new AWS.SNS({
                     apiVersion: '2010-03-31'
@@ -319,7 +319,7 @@ exports.deleteAnswer = async (req, res) => {
                                 }),
                             }),
                             /* required */
-                            TopicArn: process.env.SNS_TOPIC
+                            TopicArn: process.env.SNS_TOPIC_ARN
                         };
                         var publishTextPromise = new AWS.SNS({
                             apiVersion: '2010-03-31'
@@ -419,7 +419,7 @@ exports.updateAnswer = (req, res) => {
                                     }),
                                 }),
                                 /* required */
-                                TopicArn: process.env.SNS_TOPIC
+                                TopicArn: process.env.SNS_TOPIC_ARN
                             };
                             var publishTextPromise = new AWS.SNS({
                                 apiVersion: '2010-03-31'
