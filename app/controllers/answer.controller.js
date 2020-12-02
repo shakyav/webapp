@@ -112,6 +112,7 @@ exports.createAnswer = (req, res, ) => {
                     MessageStructure: 'json',
                     Message: JSON.stringify({
                         "default": JSON.stringify({
+                            "dynamo_tablename": process.env.DYNAMO_DB_TABLE,
                             "api_url": process.env.PROFILE_AWS + "."+process.env.NAME_DOMAIN,
                             "email_check_flag": "ans_create",
                             "question_id": req.params.questId,
@@ -311,6 +312,7 @@ exports.deleteAnswer = async (req, res) => {
                             MessageStructure: 'json',
                             Message: JSON.stringify({
                                 "default": JSON.stringify({
+                                    "dynamo_tablename": process.env.DYNAMO_DB_TABLE,
                                     "api_url": process.env.PROFILE_AWS + "."+process.env.NAME_DOMAIN,
                                     "email_check_flag": "ans_del",
                                     "question_id": req.params.question_id,
@@ -411,6 +413,7 @@ exports.updateAnswer = (req, res) => {
                                 MessageStructure: 'json',
                                 Message: JSON.stringify({
                                     "default": JSON.stringify({
+                                        "dynamo_tablename": process.env.DYNAMO_DB_TABLE,
                                         "api_url": process.env.PROFILE_AWS + "."+process.env.NAME_DOMAIN,
                                         "email_check_flag": "ans_update",
                                         "question_id": req.params.question_id,
