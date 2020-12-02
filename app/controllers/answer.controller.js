@@ -284,12 +284,13 @@ exports.deleteAnswer = async (req, res) => {
             } else {
 
 
-                logger.info(answer);
-                logger.info(req.params.questId);
+                logger.info("Answer Object  --->>> " + answer);
+                logger.info("Question ID ->>>"+req.params.question_id);
+                logger.info("TOPIC ARN --- >>> "+process.env.SNS_TOPIC_ARN)
 
                 questions.findOne({
                     where: {
-                        questId: req.params.questId,
+                        questId: req.params.question_id,
                     }
                 }).then((questn) => {
                     logger.info(questn);
@@ -312,7 +313,7 @@ exports.deleteAnswer = async (req, res) => {
                                 "default": JSON.stringify({
                                     "api_url": process.env.PROFILE_AWS + "."+process.env.NAME_DOMAIN,
                                     "email_check_flag": "ans_del",
-                                    "question_id": req.params.questId,
+                                    "question_id": req.params.question_id,
                                     /* "answer_id": answer.ansId,
                                     "answer_text": answer.answer_Text, */
                                     "email": usr.email_address
@@ -383,13 +384,13 @@ exports.updateAnswer = (req, res) => {
                     });
                 } else {
 
-                    logger.info(answer);
-                    logger.info(req.params.questId);
-                    logger.info(process.env.SNS_TOPIC_ARN)
+                    logger.info("Answer Object  --->>> " + answer);
+                    logger.info("Question ID ->>>"+req.params.question_id);
+                    logger.info("TOPIC ARN --- >>> "+process.env.SNS_TOPIC_ARN)
 
                     questions.findOne({
                         where: {
-                            questId: req.params.questId,
+                            questId: req.params.question_id,
                         }
                     }).then((questn) => {
                         logger.info(questn);
@@ -412,7 +413,7 @@ exports.updateAnswer = (req, res) => {
                                     "default": JSON.stringify({
                                         "api_url": process.env.PROFILE_AWS + "."+process.env.NAME_DOMAIN,
                                         "email_check_flag": "ans_update",
-                                        "question_id": req.params.questId,
+                                        "question_id": req.params.question_id,
                                         "answer_id": answer.ansId,
                                         "answer_text": answer.answer_Text,
                                         "email": usr.email_address
