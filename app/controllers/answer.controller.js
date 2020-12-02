@@ -109,6 +109,7 @@ exports.createAnswer = (req, res, ) => {
                     MessageStructure: 'json',
                     Message: JSON.stringify({
                         "default": JSON.stringify({
+                            "api_url": process.env.PROFILE_AWS + process.env.NAME_DOMAIN,
                             "email_check_flag": "ans_create",
                             "question_id": req.params.questId,
                             "answer_id": answer.ansId,
@@ -306,6 +307,7 @@ exports.deleteAnswer = async (req, res) => {
                             MessageStructure: 'json',
                             Message: JSON.stringify({
                                 "default": JSON.stringify({
+                                    "api_url": process.env.PROFILE_AWS + process.env.NAME_DOMAIN,
                                     "email_check_flag": "ans_del",
                                     "question_id": req.params.questId,
                                     /* "answer_id": answer.ansId,
@@ -404,6 +406,7 @@ exports.updateAnswer = (req, res) => {
                                 MessageStructure: 'json',
                                 Message: JSON.stringify({
                                     "default": JSON.stringify({
+                                        "api_url": process.env.PROFILE_AWS + process.env.NAME_DOMAIN,
                                         "email_check_flag": "ans_update",
                                         "question_id": req.params.questId,
                                         "answer_id": answer.ansId,
