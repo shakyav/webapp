@@ -85,6 +85,9 @@ exports.createAnswer = (req, res, ) => {
 
         logger.info(answer);
         logger.info(req.params.questId);
+        logger.info(process.env.SNS_TOPIC_ARN);
+        logger.info(process.env.NAME_DOMAIN)
+        logger.info(process.env.PROFILE_AWS)
 
         questions.findOne({
             where: {
@@ -382,6 +385,7 @@ exports.updateAnswer = (req, res) => {
 
                     logger.info(answer);
                     logger.info(req.params.questId);
+                    logger.info(process.env.SNS_TOPIC_ARN)
 
                     questions.findOne({
                         where: {
