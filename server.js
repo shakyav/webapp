@@ -11,7 +11,7 @@ const app = express();
 var corsOptions = {
   origin: "http://localhost:8081"
 };
-logger.info(sslcheck.rdsSSLCheck);
+
 logger.info("Application running");
 
 app.use(cors(corsOptions));
