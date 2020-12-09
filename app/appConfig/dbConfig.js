@@ -7,6 +7,7 @@ module.exports = {
     PASSWORD: process.env.RDS_PASSWORD,
     DB: process.env.RDS_DB_NAME,
     dialect: "mysql",
+    ssl: "AMAZON RDS",
     pool: {
       max: 5,
       min: 0,
