@@ -9,6 +9,7 @@ module.exports = {
     dialect: "mysql",
     dialectOptions: {
       ssl: 'Amazon RDS',
+      rejectUnauthorized: true,
     },
     pool: {
       max: 5,

@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const log = require("./logs")
 const logger = log.getLogger('logs');
+const sslcheck = require("./app/models/index")
 /* const fileupload = require("./app/controllers/fileupload.controller") */
 
 const app = express();
@@ -10,8 +11,9 @@ const app = express();
 var corsOptions = {
   origin: "http://localhost:8081"
 };
-
+logger.info(sslcheck.rdsSSLCheck);
 logger.info("Application running");
+
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
