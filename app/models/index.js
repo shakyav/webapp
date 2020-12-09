@@ -135,7 +135,9 @@ db.user.hasMany(db.answers,{as:"answers"}) */
 
 }) */
 
-db.sequelize.query("SHOW STATUS LIKE 'Ssl_%'", {
+/* const query = "SELECT id, user, host, connection_type FROM performance_schema.threads pst INNER JOIN information_schema.processlist isp ON pst.processlist_id = isp.id" */
+
+db.sequelize.query("SELECT id, user, host, connection_type FROM performance_schema.threads pst INNER JOIN information_schema.processlist isp ON pst.processlist_id = isp.id", {
   type: QueryTypes.SELECT
 }).then((result) => {
   // console.log(result[0].Value);
