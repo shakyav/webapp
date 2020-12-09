@@ -137,10 +137,11 @@ db.user.hasMany(db.answers,{as:"answers"}) */
 
 /* const query = "SELECT id, user, host, connection_type FROM performance_schema.threads pst INNER JOIN information_schema.processlist isp ON pst.processlist_id = isp.id" */
 
-db.sequelize.query("SELECT id, user, host, connection_type FROM performance_schema.threads pst INNER JOIN information_schema.processlist isp ON pst.processlist_id = isp.id", {
+db.sequelize.query("SELECT id, user, host, connection_type FROM performance_schema.threads pst INNER JOIN information_schema.processlist isp ON pst.processlist_id = isp.id ;", {
   type: QueryTypes.SELECT
 }).then((result) => {
   // console.log(result[0].Value);
+  logger.info(result[0].Value);
   if(result == undefined || result == null || result.length == 0){
       logger.info(`RDS DB SSL Cipher check info: SSL data not available`, {tags: 'http', additionalInfo: {result: JSON.parse(JSON.stringify(result))}});
   } else {     
