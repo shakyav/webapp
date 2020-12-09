@@ -3,7 +3,7 @@ const { QueryTypes } = require("sequelize");
 const log = require("../../logs")
 const logger = log.getLogger('logs');
 
-const Sequelize = require("sequelize");
+/* const Sequelize = require("sequelize"); */
 const sequelize = new Sequelize(
   config.DB,
   config.USER,
