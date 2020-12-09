@@ -1,6 +1,6 @@
 const config = require("../appConfig/dbConfig.js");
-const { QueryTypes } = require('sequelize');
-const log = require("../../logs");
+const { QueryTypes } = require("sequelize");
+const log = require("../../logs")
 const logger = log.getLogger('logs');
 
 const Sequelize = require("sequelize");
@@ -134,20 +134,20 @@ db.user.hasMany(db.answers,{as:"answers"}) */
   as: "questId",
 
 }) */
-exports.rdsSSLCheck = function () {
-  db.sequelize.query("SHOW STATUS LIKE 'Ssl_%'", {
-      type: QueryTypes.SELECT
-  }).then((result) => {
-      // console.log(result[0].Value);
-      if(result == undefined || result == null || result.length == 0){
-          logger.info(`RDS DB SSL Cipher check info: SSL data not available`, {tags: 'http', additionalInfo: {result: JSON.parse(JSON.stringify(result))}});
-      } else {     
-          logger.info(`RDS DB SSL Cipher check info query: SHOW STATUS LIKE 'Ssl_%'; Result: `, {tags: 'http', additionalInfo: {result: JSON.parse(JSON.stringify(result))}});
-          // logger.info(`RDS DB SSL Cipher check info: ${result[0].Value}`, {tags: 'http', additionalInfo: {result: JSON.parse(JSON.stringify(result))}});
-      }
-  }).catch(err => {
-      logger.error(`Error in RDS DB SSL Cipher check: `, {tags: 'http', additionalInfo: {error: err}});
-  });
-}
+
+db.sequelize.query("SHOW STATUS LIKE 'Ssl_%'", {
+  type: QueryTypes.SELECT
+}).then((result) => {
+  // console.log(result[0].Value);
+  if(result == undefined || result == null || result.length == 0){
+      logger.info(`RDS DB SSL Cipher check info: SSL data not available`, {tags: 'http', additionalInfo: {result: JSON.parse(JSON.stringify(result))}});
+  } else {     
+      logger.info(`RDS DB SSL Cipher check info query: SHOW STATUS LIKE 'Ssl_%'; Result: `, {tags: 'http', additionalInfo: {result: JSON.parse(JSON.stringify(result))}});
+      // logger.info(`RDS DB SSL Cipher check info: ${result[0].Value}`, {tags: 'http', additionalInfo: {result: JSON.parse(JSON.stringify(result))}});
+  }
+}).catch(err => {
+  logger.error(`Error in RDS DB SSL Cipher check: `, {tags: 'http', additionalInfo: {error: err}});
+});
+
 
 module.exports = db;
