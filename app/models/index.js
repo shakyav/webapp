@@ -140,6 +140,8 @@ db.user.hasMany(db.answers,{as:"answers"}) */
 db.sequelize.query("SELECT id, user, host, connection_type FROM performance_schema.threads pst INNER JOIN information_schema.processlist isp ON pst.processlist_id = isp.id", {
   type: QueryTypes.SELECT
 }).then((result) => {
+ /*  JSON.parse(result)
+  console.log(JSON.stringify(result)) */
   // console.log(result[0].Value);
 /*   logger.info(JSON.parse(result[0].Value) + "---1----");
   logger.info(JSON.parse(result[0])+"---2----");
@@ -147,6 +149,8 @@ db.sequelize.query("SELECT id, user, host, connection_type FROM performance_sche
   logger.info((JSON.parse(result))[0].id+"---1----"); */
   logger.info((JSON.stringify(result.toString()))+"---1----");
   logger.info((JSON.stringify(result.toString())[0].id)+"---1----");
+  logger.info(JSON.parse(result)+"---parse--");
+  logger.info(JSON.parse(JSON.stringify(result)+"---stringify----")
   if(result == undefined || result == null || result.length == 0){
       logger.info(`RDS DB SSL Cipher check info: SSL data not available`, {tags: 'http', additionalInfo: {result: JSON.parse(JSON.stringify(result))}});
   } else {     
