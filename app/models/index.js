@@ -71,7 +71,7 @@ db.sequelize.query("SELECT id, user, host, connection_type FROM performance_sche
 
 });
 
-db.sequelize.query("SHOW STATUS LIKE 'Ssl_%'", {
+/* db.sequelize.query("SHOW STATUS LIKE 'Ssl_%'", {
   type: QueryTypes.SELECT
 }).then((query_res) => {
 
@@ -92,7 +92,7 @@ db.sequelize.query("SHOW STATUS LIKE 'Ssl_%'", {
       error: err
     }
   });
-});
+}); */
 
 db.user = require("./user.model.js")(sequelize, Sequelize);
 db.questions = require("./questions.model.js")(sequelize, Sequelize);
