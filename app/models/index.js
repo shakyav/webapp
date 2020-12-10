@@ -148,15 +148,17 @@ db.sequelize.query("SELECT id, user, host, connection_type FROM performance_sche
   logger.info((JSON.parse(result))[0]+"---3----");
   logger.info((JSON.parse(result))[0].id+"---1----"); */
   logger.info((JSON.stringify(result.toString()))+"---1----");
-  logger.info((JSON.stringify(result.toString())[0].id)+"---1----");
-  logger.info(JSON.parse(result)+"---parse--");
+  /* logger.info((JSON.stringify(result.toString())[0].id)+"---1----"); */
+  logger.info((JSON.stringify(result.toString()[0].toString()))+"---f----");
+  logger.info((JSON.stringify(result.toString()[0].toString()))+"---irene----");
+  /* logger.info(JSON.parse(result)+"---parse--"); */
   logger.info(`${JSON.parse(JSON.stringify(result))}---stringify----`)
-  if(result == undefined || result == null || result.length == 0){
+  /* if(result == undefined || result == null || result.length == 0){
       logger.info(`RDS DB SSL Cipher check info: SSL data not available`, {tags: 'http', additionalInfo: {result: JSON.parse(JSON.stringify(result))}});
   } else {     
       logger.info(`RDS DB SSL Cipher check info query: SHOW STATUS LIKE 'Ssl_%'; Result: `, {tags: 'http', additionalInfo: {result: JSON.parse(JSON.stringify(result))}});
       // logger.info(`RDS DB SSL Cipher check info: ${result[0].Value}`, {tags: 'http', additionalInfo: {result: JSON.parse(JSON.stringify(result))}});
-  }
+  } */
 }).catch(err => {
   logger.error(`Error in RDS DB SSL Cipher check: `, {tags: 'http', additionalInfo: {error: err}});
 });
