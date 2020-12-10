@@ -58,7 +58,15 @@ db.sequelize.query("SELECT id, user, host, connection_type FROM performance_sche
   type: QueryTypes.SELECT
 }).then((query_res) => {
 
-  logger.info(JSON.stringify(query_res) + "------------");
+
+  if (query_res == undefined || query_res == null || query_res.length == 0) {
+    logger.info("RDS DB SSL connection type result of query : SELECT id, user, host, connection_type FROM performance_schema.threads pst INNER JOIN information_schema.processlist isp ON pst.processlist_id = isp.id ; Result : SSL data not available");
+  } else {
+    logger.info(" RDS DB SSL connection type result of query : SELECT id, user, host, connection_type FROM performance_schema.threads pst INNER JOIN information_schema.processlist isp ON pst.processlist_id = isp.id ; Result :")
+    logger.info(JSON.stringify(query_res));
+
+  }
+ 
 
 
 });
