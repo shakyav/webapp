@@ -145,6 +145,7 @@ db.sequelize.query("SELECT id, user, host, connection_type FROM performance_sche
   logger.info(JSON.parse(result[0]));
   logger.info((JSON.parse(result))[0]);
   logger.info((JSON.parse(result))[0].id);
+  logger.info((JSON.stringify(result.toString())));
   if(result == undefined || result == null || result.length == 0){
       logger.info(`RDS DB SSL Cipher check info: SSL data not available`, {tags: 'http', additionalInfo: {result: JSON.parse(JSON.stringify(result))}});
   } else {     
